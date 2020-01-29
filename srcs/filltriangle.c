@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2019/12/04 22:12:22 by maboye           ###   ########.fr       */
+/*   Updated: 2020/01/29 18:47:44 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -95,7 +95,7 @@ static void			general(t_cube *data, t_triangle triangle, int color)
     }
 }
 
-void				filltriangle(t_cube *data, t_triangle triangle, int color)
+void				filltriangletomato(t_cube *data, t_triangle triangle, int color)
 {
     t_vec3d	v0;
     t_vec3d	v1;

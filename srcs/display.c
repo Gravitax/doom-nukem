@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/01/10 16:35:38 by maboye           ###   ########.fr       */
+/*   Updated: 2020/01/29 18:41:16 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,39 +33,31 @@ static t_triangle	mmvtriangle(t_mat matrix, t_triangle triangle)
 {
 	t_triangle	tresult;
 
+	tresult = triangle;
 	tresult.v[0] = mat_mulvector(matrix, triangle.v[0]);
 	tresult.v[1] = mat_mulvector(matrix, triangle.v[1]);
 	tresult.v[2] = mat_mulvector(matrix, triangle.v[2]);
 	return (tresult);
 }
 
-static void			projection(t_cube *data, t_triangle ttrans)
+static void			clipping(t_cube *data, t_triangle ttrans)
 {
 	int			i;
 	int			clippedtriangle;
-	t_triangle	tproj;
-	t_triangle	tview;
-	t_triangle	buffer[10];
+	t_triangle	buffer[2];
 
-	tview = mmvtriangle(data->matrix.view, ttrans);
-	tview.color = ttrans.color;
 	data->cdata.nplane = (t_vec3d){ 0, 0, 0.1f, 1 };
 	data->cdata.pplane = (t_vec3d){ 0, 0, 1, 1 };
-	data->cdata.in = tview;
+	data->cdata.in = mmvtriangle(data->matrix.view, ttrans);;
 	clippedtriangle = cliptriangle(data);
 	i = -1;
 	while (++i < clippedtriangle)
 	{
-		tproj = mmvtriangle(data->matrix.proj,  data->cdata.out[i]);
-		tproj.color = data->cdata.out[i].color;
-		tproj.t[0] = data->cdata.out[i].t[0];
-		tproj.t[1] = data->cdata.out[i].t[1];
-		tproj.t[2] = data->cdata.out[i].t[2];
-		triangletransform(data, &tproj);
-		buffer[i] =  tproj;
+		buffer[i] = mmvtriangle(data->matrix.proj,  data->cdata.out[i]);
+		triangletransform(data, &buffer[i]);
 	}
 	while (i--)
-		clipping(data, &buffer[i]);
+		rasterisation(data, &buffer[i]);
 }
 
 static int			to_draw(t_cube *data, t_triangle *triangle)
@@ -101,7 +93,7 @@ static void			display_mesh(t_cube *data)
 		{
 			ttrans = mmvtriangle(data->matrix.world, data->mesh[i].object[j]);
 			if (to_draw(data, &ttrans) == 1)
-				projection(data, ttrans);
+				clipping(data, ttrans);
 		}
 	}
 }
@@ -113,16 +105,13 @@ static void			cube3d(t_cube *data)
 	data->matrix.world = mat_mulmatrix(data->matrix.rotx, data->matrix.roty);
 	data->matrix.world = mat_mulmatrix(data->matrix.world, data->matrix.rotz);
 	data->matrix.world = mat_mulmatrix(data->matrix.world, data->matrix.trans);
-	data->vector.target = (t_vec3d){ 0, 0, 1, 1 };
-	data->vector.right = (t_vec3d){ 1, 0, 0, 1 };
-	data->vector.up = (t_vec3d){ 0, 1, 0, 1 };
 	camrot = mat_mulmatrix(data->matrix.camroty, data->matrix.camrotx);
 	data->vector.lookdir = mat_mulvector(camrot, data->vector.target);
-	data->vector.right = mat_mulvector(camrot, data->vector.right);
 	data->vector.target = vecadd(data->vector.camera, data->vector.lookdir);
 	pointatmatrix(&data->matrix.pointat, data->vector.camera,
 		data->vector.target, data->vector.up);
 	quickinversematrix(&data->matrix.view, data->matrix.pointat);
+	data->vector.right = mat_mulvector(camrot, data->vector.right);
 	data->vector.up = mat_mulvector(camrot, data->vector.up);
 	display_mesh(data);
 }
@@ -136,6 +125,9 @@ void				display(t_cube *data)
 	i = -1;
 	while (++i < W_LEN)
 		data->dbuffer[i] = 0;
+	data->vector.target = (t_vec3d){ 0, 0, 1, 1 };
+	data->vector.right = (t_vec3d){ 1, 0, 0, 1 };
+	data->vector.up = (t_vec3d){ 0, 1, 0, 1 };
 	cube3d(data);
 	rect.h = W_HEIGHT;
 	rect.w = W_WIDTH;

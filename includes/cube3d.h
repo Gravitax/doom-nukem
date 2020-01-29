@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2019/12/16 16:05:14 by maboye           ###   ########.fr       */
+/*   Updated: 2020/01/29 18:47:47 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -192,15 +192,16 @@ typedef struct	s_mainenv
 void			clean_exit(t_cube *data, char *str, int token);
 float			rsqrt(float number);
 
-void            clipping(t_cube *data, t_triangle *triangle);
 int             cliptriangle(t_cube *data);
+int             newtriangles(t_cube *data);
+void            rasterisation(t_cube *data, t_triangle *triangle);
 
 void			display(t_cube *data);
 void			drawline(t_cube *data, t_vec3d p1, t_vec3d p2, int color);
 void			drawtriangle(t_cube *data, t_triangle triangle, int color);
 void			events(t_cube *data);
-void			filltriangle(t_cube *data, t_triangle triangle, int color);
-void            filltriangletext(t_cube *data, t_triangle triangle, int color);
+void			filltriangletomato(t_cube *data, t_triangle triangle, int color);
+void            filltriangletext(t_cube *data, t_triangle triangle);
 void            get_object(t_cube *data, t_mesh *mesh, char *file);
 
 SDL_Surface		*new_surface(int w, int h);

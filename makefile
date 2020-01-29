@@ -6,7 +6,7 @@
 #    By: maboye <maboye@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/31 12:01:33 by maboye            #+#    #+#              #
-#    Updated: 2019/12/16 16:08:58 by maboye           ###   ########.fr        #
+#    Updated: 2020/01/29 16:55:31 by maboye           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -33,8 +33,8 @@ INCDIR	=	./includes
 OBJDIR	=	./obj
 
 # src / obj files
-SRC		=	clipping.c \
-			cliptriangle.c \
+SRC		=	cliptriangle.c \
+			cliptriangle2.c \
 			display.c \
 			drawline.c \
 			events.c \
@@ -42,6 +42,7 @@ SRC		=	clipping.c \
 			filltriangletext.c \
 			matrix.c \
 			parser.c \
+			rasterisation.c \
 			tools.c \
 			vector.c \
 			main.c

@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   clipping.c                                         :+:      :+:    :+:   */
+/*   rasterisation.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/01/10 18:40:12 by maboye           ###   ########.fr       */
+/*   Updated: 2020/01/29 18:47:17 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,22 +67,20 @@ static void     clip_byplane(t_cube *data, t_triangle *buffer, int *ntriangles)
     *ntriangles += trianglestoadd;
 }
 
-static void     rasterisation(t_cube *data, t_triangle *buffer)
+static void     projection(t_cube *data, t_triangle *buffer)
 {
     while (data->index--)
 	{
-	    filltriangletext(data,
-	    	buffer[data->index],
-	    	buffer[data->index].color);
+	    filltriangletext(data, buffer[data->index]);
 	    drawtriangle(data, buffer[data->index], 0xffffffff);
 	}
 }
 
-void            clipping(t_cube *data, t_triangle *triangle)
+void            rasterisation(t_cube *data, t_triangle *triangle)
 {
     int         ntriangles;
     int         plane;
-    t_triangle  buffer[10];
+    t_triangle  buffer[13];
 
     data->index = 0;
     buffer[data->index++] = *triangle;
@@ -93,5 +91,5 @@ void            clipping(t_cube *data, t_triangle *triangle)
         set_properplane(data, plane);
         clip_byplane(data, buffer, &ntriangles);
     }
-    rasterisation(data, buffer);
+    projection(data, buffer);
 }

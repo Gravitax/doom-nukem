@@ -12,23 +12,6 @@
 
 #include "../includes/cube3d.h"
 
-static void			triangletransform(t_cube *data, t_triangle *triangle)
-{
-	int		i;
-
-	i = -1;
-	while (++i < 3)
-	{
-		// triangle->t[i].u = triangle->t[i].u / triangle->v[i].w;
-		// triangle->t[i].v = triangle->t[i].v / triangle->v[i].w;
-		triangle->v[i].w = (1 / triangle->v[i].w);
-		triangle->v[i] = vecmul(triangle->v[i], data->zoom * triangle->v[i].w);
-		triangle->v[i] = vecadd(triangle->v[i], data->vector.offset);
-		triangle->v[i].x *= data->xfactor;
-		triangle->v[i].y *= data->yfactor;
-	}
-}
-
 static t_triangle	mmvtriangle(t_mat matrix, t_triangle triangle)
 {
 	t_triangle	tresult;
@@ -44,20 +27,14 @@ static void			clipping(t_cube *data, t_triangle ttrans)
 {
 	int			i;
 	int			clippedtriangle;
-	t_triangle	buffer[2];
 
 	data->cdata.nplane = (t_vec3d){ 0, 0, 0.1f, 1 };
 	data->cdata.pplane = (t_vec3d){ 0, 0, 1, 1 };
-	data->cdata.in = mmvtriangle(data->matrix.view, ttrans);;
+	data->cdata.in = mmvtriangle(data->matrix.view, ttrans);
 	clippedtriangle = cliptriangle(data);
 	i = -1;
 	while (++i < clippedtriangle)
-	{
-		buffer[i] = mmvtriangle(data->matrix.proj,  data->cdata.out[i]);
-		triangletransform(data, &buffer[i]);
-	}
-	while (i--)
-		rasterisation(data, &buffer[i]);
+		rasterisation(data, mmvtriangle(data->matrix.proj, data->cdata.out[i]));
 }
 
 static int			to_draw(t_cube *data, t_triangle *triangle)
@@ -89,6 +66,7 @@ static void			display_mesh(t_cube *data)
 	while (++i < data->ac - 1)
 	{
 		j = data->mesh[i].size + 1;
+		data->texture = data->mesh[i].texture;
 		while (j--)
 		{
 			ttrans = mmvtriangle(data->matrix.world, data->mesh[i].object[j]);

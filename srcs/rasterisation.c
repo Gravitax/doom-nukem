@@ -16,24 +16,29 @@ static void     set_properplane(t_cube *data, int plane)
 {
     if (plane == 0)
     {
-        data->cdata.nplane = (t_vec3d){ 0, -1, 0 , 1 };
-        data->cdata.pplane = (t_vec3d){ 0, (float)W_HEIGHT, 0 , 1 };
+        data->cdata.nplane = (t_vec3d){ 0, -1, 0, 1 };
+        data->cdata.pplane = (t_vec3d){ 0, (float)W_HEIGHT - 1, 0, 1 };
     }
     else if (plane == 1)
     {
-        data->cdata.nplane = (t_vec3d){ 0, (float)W_HEIGHT, 0 , 1 };
-        data->cdata.pplane = (t_vec3d){ 0, -1, 0 , 1 };
+        data->cdata.nplane = (t_vec3d){ 0, 1, 0, 1 };
+        data->cdata.pplane = (t_vec3d){ 0, 0, 0, 1 };
     }
     else if (plane == 2)
     {
-        data->cdata.nplane = (t_vec3d){ -1, 0, 0 , 1 };
-        data->cdata.pplane = (t_vec3d){ (float)W_WIDTH, 0, 0 , 1 };
+        data->cdata.nplane = (t_vec3d){ -1, 0, 0, 1 };
+        data->cdata.pplane = (t_vec3d){ (float)W_WIDTH - 1, 0, 0, 1 };
     }
     else if (plane == 3)
     {
-        data->cdata.nplane = (t_vec3d){ (float)W_WIDTH, 0, 0 , 1 };
-        data->cdata.pplane = (t_vec3d){ -1, 0, 0 , 1 };
+        data->cdata.nplane = (t_vec3d){ 1, 0, 0, 1 };
+        data->cdata.pplane = (t_vec3d){ 0, 0, 0, 1 };
     }
+    // else if (plane == 4)
+    // {
+    //     data->cdata.nplane = (t_vec3d){ 1, 1, 1, 1 };
+    //     data->cdata.pplane = (t_vec3d){ 0, 0, 1, 1 };
+    // }
 }
 
 static void     tabpopfront(t_cube *data, t_triangle *buffer)
@@ -67,23 +72,44 @@ static void     clip_byplane(t_cube *data, t_triangle *buffer, int *ntriangles)
     *ntriangles += trianglestoadd;
 }
 
+static void		triangletransform(t_cube *data, t_triangle *triangle)
+{
+	int		i;
+
+	i = -1;
+	while (++i < 3)
+	{
+        //triangle->v[i].w = triangle->v[i].w < 0 ? -triangle->v[i].w : triangle->v[i].w;
+		triangle->v[i].w = (1 / triangle->v[i].w);
+		triangle->v[i] = vecmul(triangle->v[i], data->zoom * triangle->v[i].w);
+		triangle->v[i] = vecadd(triangle->v[i], data->vector.offset);
+		triangle->v[i].x *= data->xfactor;
+		triangle->v[i].y *= data->yfactor;
+		// triangle->t[i].u = triangle->t[i].u / triangle->t[i].w;
+		// triangle->t[i].v = triangle->t[i].v / triangle->t[i].w;
+		//triangle->t[i].w = (1 / triangle->t[i].w);
+	}
+}
+
 static void     projection(t_cube *data, t_triangle *buffer)
 {
     while (data->index--)
 	{
+        //triangletransform(data, &buffer[data->index]);
 	    filltriangletext(data, buffer[data->index]);
 	    drawtriangle(data, buffer[data->index], 0xffffffff);
 	}
 }
 
-void            rasterisation(t_cube *data, t_triangle *triangle)
+void            rasterisation(t_cube *data, t_triangle triangle)
 {
     int         ntriangles;
     int         plane;
     t_triangle  buffer[13];
 
     data->index = 0;
-    buffer[data->index++] = *triangle;
+    triangletransform(data, &triangle);
+    buffer[data->index++] = triangle;
     ntriangles = 1;
     plane = -1;
 	while (++plane < 4)

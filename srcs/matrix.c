@@ -31,8 +31,8 @@ void			rotxmatrix(t_mat *matrix, float angle)
 {
 	matrix->m[0][0] = 1;
 	matrix->m[1][1] = cosf(angle);
-	matrix->m[1][2] = -sinf(angle);
-	matrix->m[2][1] = sinf(angle);
+	matrix->m[1][2] = sinf(angle);
+	matrix->m[2][1] = -sinf(angle);
 	matrix->m[2][2] = cosf(angle);
 	matrix->m[3][3] = 1;
 }
@@ -40,9 +40,9 @@ void			rotxmatrix(t_mat *matrix, float angle)
 void			rotymatrix(t_mat *matrix, float angle)
 {
 	matrix->m[0][0] = cosf(angle);
-	matrix->m[0][2] = -sinf(angle);
+	matrix->m[0][2] = sinf(angle);
 	matrix->m[1][1] = 1;
-	matrix->m[2][0] = sinf(angle);
+	matrix->m[2][0] = -sinf(angle);
 	matrix->m[2][2] = cosf(angle);
 	matrix->m[3][3] = 1;
 }

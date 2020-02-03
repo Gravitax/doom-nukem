@@ -38,10 +38,11 @@ SRC		=	cliptriangle.c \
 			display.c \
 			drawline.c \
 			events.c \
-			filltriangle.c \
 			filltriangletext.c \
+			filltriangletext2.c \
 			matrix.c \
 			parser.c \
+			quicksort.c \
 			rasterisation.c \
 			tools.c \
 			vector.c \

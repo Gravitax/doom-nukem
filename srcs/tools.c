@@ -12,6 +12,16 @@
 
 #include "../includes/cube3d.h"
 
+int				ft_max(int nb, int max)
+{
+	return (nb > max ? max : nb);
+}
+
+int				ft_min(int nb, int min)
+{
+	return (nb < min ? nb : min);
+}
+
 float			rsqrt(float number)
 {
 	float	i;
@@ -84,13 +94,35 @@ SDL_Surface		*new_surface(int w, int h)
 				color[0], color[1], color[2], color[3]));
 }
 
+uint32_t		get_pixel(t_cube *data, float samplex, float sampley)
+{
+	int				sx;
+	int				sy;
+	uint8_t			*p;
+
+	sx = samplex * data->texture->w;
+	if (samplex > 1 || sampley > 1
+			|| samplex < 0 || sampley < 0)
+		return (0);
+	sy = sampley * data->texture->h;
+	p = (uint8_t *)data->texture->pixels + sy * data->texture->pitch
+		+ sx * data->texture->format->BytesPerPixel;
+	return (p[2] | p[1] << 8 | p[0] << 16 | 255 << 24);
+}
+
 void			putpixel(t_cube *data, int x, int y, int color)
 {
 	unsigned int	*pixels;
+	int				pos;
 
 	if (x < 0 || x >= W_WIDTH
 			|| y < 0 || y >= W_HEIGHT)
 		return ;
-	pixels = (unsigned int *)data->screen->pixels;
-	pixels[x + (y * W_WIDTH)] = color;
+	pos = x + (y * W_WIDTH);
+ 	if (data->fdata.texw >= data->dbuffer[pos])
+	{
+		pixels = (unsigned int *)data->screen->pixels;
+		pixels[pos] = color;
+		data->dbuffer[pos] = data->fdata.texw;
+	}
 }

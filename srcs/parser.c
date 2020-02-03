@@ -139,7 +139,7 @@ void            get_object(t_cube *data, t_mesh *mesh, char *file)
 {
     char    *path;
 
-    path = ft_strjoin("/sgoinfre/goinfre/Perso/maboye/cube3d/object/", file);
+    path = ft_strjoin("/home/maboye/42/doom-nukem/object/", file);
     path = ft_strfjoin(path, ".obj", 1);
     if (!(data->str = ft_readfile(path)))
     {

@@ -66,10 +66,12 @@ t_vec3d			vecintersectplane(t_cube *data, t_vec3d startl, t_vec3d endl)
 {
 	float		ad;
 	float		bd;
+	float		dplane;
 
-	data->cdata.dplane = -vecdotproduct(data->cdata.nplane, data->cdata.pplane);
+	//data->cdata.nplane = vecnormalise(data->cdata.nplane);
 	ad = vecdotproduct(startl, data->cdata.nplane);
 	bd = vecdotproduct(endl, data->cdata.nplane);
-	data->t = (-data->cdata.dplane - ad) / (bd - ad);
+	dplane = vecdotproduct(data->cdata.nplane, data->cdata.pplane);
+	data->t = (dplane - ad) / (bd - ad);
 	return (vecadd(startl, vecmul(vecsub(endl, startl), data->t)));
 }

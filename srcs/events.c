@@ -42,18 +42,18 @@ static void		camera(t_cube *data)
 		data->vector.camera = vecsub(data->vector.camera, vecmul(data->vector.up, 0.1f));
 	else if (data->event.key.keysym.sym == SDLK_DOWN)
 		data->vector.camera = vecadd(data->vector.camera, vecmul(data->vector.up, 0.1f));
-	else if (data->event.key.keysym.sym == SDLK_a)
+	else if (data->event.key.keysym.sym == SDLK_q)
 		data->vector.camera = vecsub(data->vector.camera, vecmul(data->vector.right, 0.1f));
 	else if (data->event.key.keysym.sym == SDLK_d)
 		data->vector.camera = vecadd(data->vector.camera, vecmul(data->vector.right, 0.1f));
-	else if (data->event.key.keysym.sym == SDLK_w)
+	else if (data->event.key.keysym.sym == SDLK_z)
 		data->vector.camera = vecadd(data->vector.camera, data->vector.forward);
 	else if (data->event.key.keysym.sym == SDLK_s)
 		data->vector.camera = vecsub(data->vector.camera, data->vector.forward);
-	else if (data->event.key.keysym.sym == SDLK_q
+	else if (data->event.key.keysym.sym == SDLK_a
 	|| data->event.key.keysym.sym == SDLK_e)
 	{
-		data->yaw += (data->event.key.keysym.sym == SDLK_q ? 0.02f : -0.02f);
+		data->yaw += (data->event.key.keysym.sym == SDLK_a ? 0.02f : -0.02f);
 		rotymatrix(&data->matrix.camroty, data->yaw);
 	}
 	else if (data->event.key.keysym.sym == SDLK_r

@@ -112,6 +112,8 @@ static void		init_data(t_cube *data)
 		{
 			cube(data, i);
 			data->mesh[i].size = 11;
+			if (!(data->mesh[i].texture = SDL_LoadBMP("img/doom.bmp")))
+				clean_exit(data, "cube3d: loading sprite doom error", 0);
 		}
 		else
 		{

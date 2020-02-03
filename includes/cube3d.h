@@ -16,7 +16,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-# include <SDL.h>
+# include <SDL2/SDL.h>
 
 # include "../libft/libft.h"
 
@@ -70,6 +70,7 @@ typedef struct	s_triangle
 typedef struct	s_mesh
 {
 	t_triangle	*object;
+	SDL_Surface	*texture;
 	int			size;
 }				t_mesh;
 
@@ -100,10 +101,6 @@ typedef struct	s_filltriangle
 	int			dy1;
 	int			dx2;
 	int			dy2;
-	int			ystart;
-	int			yend;
-	int			xstart;
-	int			xend;
 	float		daxstep;
 	float		dbxstep;
 	float		du1;
@@ -118,8 +115,6 @@ typedef struct	s_filltriangle
 	float		dw2;
 	float		dw1step;
 	float		dw2step;
-	float		m0;
-	float		m1;
 	float		texu;
 	float		texv;
 	float		texw;
@@ -129,17 +124,12 @@ typedef struct	s_filltriangle
 	float		texeu;
 	float		texev;
 	float		texew;
-	float		x0;
-	float		x1;
 }				t_fdata;
 
 typedef struct	s_clipptriangle
 {
 	int			inside;
 	int			outside;
-	int			it;
-	int			ot;
-	float		dplane;
 	t_vec3d		nplane;
 	t_vec3d		pplane;
 	t_vec3d		ipoints[3];
@@ -149,6 +139,32 @@ typedef struct	s_clipptriangle
 	t_triangle	in;
 	t_triangle	out[2];
 }				t_cdata;
+
+typedef struct	s_variables
+{
+	// int				ac;
+	// int				i;
+	// int				index;
+	// int				fps;
+	// int				ti;
+	// int				vi;
+	// double			coef;
+	// float			etime;
+	// float			frame_start;
+	// float			far;
+	// float			fov;
+	// float			near;
+	// float			t;
+	// float			xfactor;
+	// float			yfactor;
+	// float			xtheta;
+	// float			ytheta;
+	// float			ztheta;
+	// float			xaw;
+	// float			yaw;
+	// float			zoom;
+}				t_var;
+
 
 typedef struct	s_mainenv
 {
@@ -173,38 +189,45 @@ typedef struct	s_mainenv
 	float			xaw;
 	float			yaw;
 	float			zoom;
-	float			dbuffer[W_WIDTH * W_HEIGHT];
+	float			dbuffer[W_LEN + 1];
 	char			*str;
 	char			**tab;
-	t_matrix		matrix;
-	t_vector		vector;
 	t_cdata			cdata;
 	t_fdata			fdata;
+	t_var			variable;
+	t_matrix		matrix;
+	t_vector		vector;
 	t_mesh			mesh[20];
 	SDL_Event		event;
 	SDL_Surface		*screen;
+	SDL_Surface		*texture;
 	SDL_Texture		*window;
 	SDL_Renderer	*renderer;
 	SDL_Window		*pwindow;
 }				t_cube;
 
+int				ft_max(int nb, int max);
+int				ft_min(int nb, int min);
+void			ft_quicksort(t_triangle *buffer, int start, int size);
 
 void			clean_exit(t_cube *data, char *str, int token);
 float			rsqrt(float number);
 
 int             cliptriangle(t_cube *data);
 int             newtriangles(t_cube *data);
-void            rasterisation(t_cube *data, t_triangle *triangle);
+void            rasterisation(t_cube *data, t_triangle triangle);
 
 void			display(t_cube *data);
 void			drawline(t_cube *data, t_vec3d p1, t_vec3d p2, int color);
 void			drawtriangle(t_cube *data, t_triangle triangle, int color);
 void			events(t_cube *data);
-void			filltriangletomato(t_cube *data, t_triangle triangle, int color);
 void            filltriangletext(t_cube *data, t_triangle triangle);
+void            fill_top(t_cube *data, t_triangle triangle);
+void            fill_bottom(t_cube *data, t_triangle triangle);
 void            get_object(t_cube *data, t_mesh *mesh, char *file);
 
 SDL_Surface		*new_surface(int w, int h);
+uint32_t		get_pixel(t_cube *data, float samplex, float sampley);
 void			putpixel(t_cube *data, int x, int y, int color);
 
 void			multiply_matrix(t_vec3d i, t_vec3d *o, t_mat m);

@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/01/29 19:28:19 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/03 21:10:27 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,19 +41,29 @@ static void     swap_vertex(t_triangle *tmp)
 {
     if (tmp->v[1].y < tmp->v[0].y)
     {
-        ft_swap((void *)&tmp->v[1], (void *)&tmp->v[0]);
-        ft_swap((void *)&tmp->t[1], (void *)&tmp->t[0]);
-    }
-    if (tmp->v[2].y < tmp->v[0].y)
-    {
-        ft_swap((void *)&tmp->v[2], (void *)&tmp->v[0]);
-        ft_swap((void *)&tmp->t[2], (void *)&tmp->t[0]);
+        ft_swap((void *)&tmp->v[0], (void *)&tmp->v[1]);
+        ft_swap((void *)&tmp->t[0], (void *)&tmp->t[1]);
     }
     if (tmp->v[2].y < tmp->v[1].y)
     {
-        ft_swap((void *)&tmp->v[2], (void *)&tmp->v[1]);
-        ft_swap((void *)&tmp->t[2], (void *)&tmp->t[1]);
+        ft_swap((void *)&tmp->v[1], (void *)&tmp->v[2]);
+        ft_swap((void *)&tmp->t[1], (void *)&tmp->t[2]);
     }
+    if (tmp->v[1].y < tmp->v[0].y)
+    {
+        ft_swap((void *)&tmp->v[0], (void *)&tmp->v[1]);
+        ft_swap((void *)&tmp->t[0], (void *)&tmp->t[1]);
+    }
+    // if (tmp->v[0].y == tmp->v[1].y && tmp->v[1].x < tmp->v[0].x)
+    // {
+    //     ft_swap((void *)&tmp->v[0], (void *)&tmp->v[1]);
+    //     ft_swap((void *)&tmp->t[0], (void *)&tmp->t[1]);
+    // }
+    // else if (tmp->v[1].y == tmp->v[2].y && tmp->v[2].x < tmp->v[1].x)
+    // {
+    //     ft_swap((void *)&tmp->v[1], (void *)&tmp->v[2]);
+    //     ft_swap((void *)&tmp->t[1], (void *)&tmp->t[2]);
+    // }
 }
 
 void			filltriangletext(t_cube *data, t_triangle triangle)
@@ -64,7 +74,7 @@ void			filltriangletext(t_cube *data, t_triangle triangle)
     swap_vertex(&tmp);
     init_filldata(data, tmp);
 	if (data->fdata.dy1)
-       fill_top(data, tmp);
+        fill_top(data, tmp);
     data->fdata.du1 = tmp.t[2].u - tmp.t[1].u;
     data->fdata.dv1 = tmp.t[2].v - tmp.t[1].v;
     data->fdata.dw1 = tmp.t[2].w - tmp.t[1].w;

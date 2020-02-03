@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/01/29 19:28:19 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/03 21:21:53 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ static void     filltriangle(t_cube *data, t_triangle triangle, int i)
     float   t;
     float   tstep;
 
-    j = data->fdata.ax - 1;
+    j = (int)(data->fdata.ax - 0.5f) - 1;
+    data->fdata.bx = (int)(data->fdata.bx - 0.5f);
     t = 0;
     tstep = 1 / ((float)(data->fdata.bx - data->fdata.ax));
     while (++j < data->fdata.bx)
@@ -48,7 +49,9 @@ static void     filltriangle(t_cube *data, t_triangle triangle, int i)
 		data->fdata.texv = (1 - t) * data->fdata.texsv + t * data->fdata.texev;
 		data->fdata.texw = (1 - t) * data->fdata.texsw + t * data->fdata.texew;
         putpixel(data, j, i,// triangle.color);
-            get_pixel(data, data->fdata.texu, data->fdata.texv));
+            get_pixel(data,
+                data->fdata.texu ,
+                data->fdata.texv ));
 		t += tstep;
 	}
 }
@@ -64,19 +67,21 @@ static void     init_step(t_cube *data)
 void            fill_bottom(t_cube *data, t_triangle triangle)
 {
     int     i;
+    int     end;
 
     init_step(data);
-    i = triangle.v[1].y - 1;
-    while (++i <= triangle.v[2].y)
+    i = (int)ceil(triangle.v[1].y - 0.5f) - 1;
+    end = (int)ceil(triangle.v[2].y - 0.5f);
+    while (++i < end)
     {
-        data->fdata.ax = triangle.v[1].x + (float)(i - triangle.v[1].y) * data->fdata.daxstep;
-        data->fdata.bx = triangle.v[0].x + (float)(i - triangle.v[0].y) * data->fdata.dbxstep;
-        data->fdata.texsu = triangle.t[1].u + (float)(i - triangle.v[1].y) * data->fdata.du1step;
-        data->fdata.texsv = triangle.t[1].v + (float)(i - triangle.v[1].y) * data->fdata.dv1step;
-        data->fdata.texsw = triangle.t[1].w + (float)(i - triangle.v[1].y) * data->fdata.dw1step;
-        data->fdata.texeu = triangle.t[0].u + (float)(i - triangle.v[0].y) * data->fdata.du2step;
-        data->fdata.texev = triangle.t[0].v + (float)(i - triangle.v[0].y) * data->fdata.dv2step;
-        data->fdata.texew = triangle.t[0].w + (float)(i - triangle.v[0].y) * data->fdata.dw2step;
+        data->fdata.ax = triangle.v[1].x + (i + 0.5f - triangle.v[1].y) * data->fdata.daxstep;
+        data->fdata.bx = triangle.v[0].x + (i + 0.5f - triangle.v[0].y) * data->fdata.dbxstep;
+        data->fdata.texsu = triangle.t[1].u + (i + 0.5f - triangle.v[1].y) * data->fdata.du1step;
+        data->fdata.texsv = triangle.t[1].v + (i + 0.5f - triangle.v[1].y) * data->fdata.dv1step;
+        data->fdata.texsw = triangle.t[1].w + (i + 0.5f - triangle.v[1].y) * data->fdata.dw1step;
+        data->fdata.texeu = triangle.t[0].u + (i + 0.5f - triangle.v[0].y) * data->fdata.du2step;
+        data->fdata.texev = triangle.t[0].v + (i + 0.5f - triangle.v[0].y) * data->fdata.dv2step;
+        data->fdata.texew = triangle.t[0].w + (i + 0.5f - triangle.v[0].y) * data->fdata.dw2step;
         if (data->fdata.ax > data->fdata.bx)
             fillswap(data);
         filltriangle(data, triangle, i);
@@ -86,19 +91,21 @@ void            fill_bottom(t_cube *data, t_triangle triangle)
 void            fill_top(t_cube *data, t_triangle triangle)
 {
     int     i;
+    int     end;
 
     init_step(data);
-    i = triangle.v[0].y - 1;
-    while (++i <= triangle.v[1].y)
+    i = (int)ceil(triangle.v[0].y - 0.5f) - 1;
+    end = (int)ceil(triangle.v[1].y - 0.5f);
+    while (++i < end)
     {
-        data->fdata.ax = triangle.v[0].x + (float)(i - triangle.v[0].y) * data->fdata.daxstep;
-        data->fdata.bx = triangle.v[0].x + (float)(i - triangle.v[0].y) * data->fdata.dbxstep;
-        data->fdata.texsu = triangle.t[0].u + (float)(i - triangle.v[0].y) * data->fdata.du1step;
-        data->fdata.texsv = triangle.t[0].v + (float)(i - triangle.v[0].y) * data->fdata.dv1step;
-        data->fdata.texsw = triangle.t[0].w + (float)(i - triangle.v[0].y) * data->fdata.dw1step;
-        data->fdata.texeu = triangle.t[0].u + (float)(i - triangle.v[0].y) * data->fdata.du2step;
-        data->fdata.texev = triangle.t[0].v + (float)(i - triangle.v[0].y) * data->fdata.dv2step;
-        data->fdata.texew = triangle.t[0].w + (float)(i - triangle.v[0].y) * data->fdata.dw2step;
+        data->fdata.ax = triangle.v[0].x + (i + 0.5f - triangle.v[0].y) * data->fdata.daxstep;
+        data->fdata.bx = triangle.v[0].x + (i + 0.5f - triangle.v[0].y) * data->fdata.dbxstep;
+        data->fdata.texsu = triangle.t[0].u + (i + 0.5f - triangle.v[0].y) * data->fdata.du1step;
+        data->fdata.texsv = triangle.t[0].v + (i + 0.5f - triangle.v[0].y) * data->fdata.dv1step;
+        data->fdata.texsw = triangle.t[0].w + (i + 0.5f - triangle.v[0].y) * data->fdata.dw1step;
+        data->fdata.texeu = triangle.t[0].u + (i + 0.5f - triangle.v[0].y) * data->fdata.du2step;
+        data->fdata.texev = triangle.t[0].v + (i + 0.5f - triangle.v[0].y) * data->fdata.dv2step;
+        data->fdata.texew = triangle.t[0].w + (i + 0.5f - triangle.v[0].y) * data->fdata.dw2step;
         if (data->fdata.ax > data->fdata.bx)
             fillswap(data);
         filltriangle(data, triangle, i);

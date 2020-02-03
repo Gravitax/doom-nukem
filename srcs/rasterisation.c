@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/01/29 18:47:17 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/03 18:46:16 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -79,15 +79,15 @@ static void		triangletransform(t_cube *data, t_triangle *triangle)
 	i = -1;
 	while (++i < 3)
 	{
-        //triangle->v[i].w = triangle->v[i].w < 0 ? -triangle->v[i].w : triangle->v[i].w;
-		triangle->v[i].w = (1 / triangle->v[i].w);
-		triangle->v[i] = vecmul(triangle->v[i], data->zoom * triangle->v[i].w);
-		triangle->v[i] = vecadd(triangle->v[i], data->vector.offset);
+		// triangle->t[i].u = triangle->t[i].u / triangle->v[i].w;
+		// triangle->t[i].v = triangle->t[i].v / triangle->v[i].w;
+		triangle->t[i].w = 1 / triangle->v[i].w;
+        triangle->v[i] = vecdiv(triangle->v[i], triangle->v[i].w);
+        triangle->v[i].x *= -1;
+        triangle->v[i].y *= -1;
+        triangle->v[i] = vecadd(triangle->v[i], data->vector.offset);
 		triangle->v[i].x *= data->xfactor;
 		triangle->v[i].y *= data->yfactor;
-		// triangle->t[i].u = triangle->t[i].u / triangle->t[i].w;
-		// triangle->t[i].v = triangle->t[i].v / triangle->t[i].w;
-		//triangle->t[i].w = (1 / triangle->t[i].w);
 	}
 }
 
@@ -95,7 +95,6 @@ static void     projection(t_cube *data, t_triangle *buffer)
 {
     while (data->index--)
 	{
-        //triangletransform(data, &buffer[data->index]);
 	    filltriangletext(data, buffer[data->index]);
 	    drawtriangle(data, buffer[data->index], 0xffffffff);
 	}

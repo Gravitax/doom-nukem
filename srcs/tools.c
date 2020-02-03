@@ -6,21 +6,11 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2019/12/04 22:12:22 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/03 18:50:25 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3d.h"
-
-int				ft_max(int nb, int max)
-{
-	return (nb > max ? max : nb);
-}
-
-int				ft_min(int nb, int min)
-{
-	return (nb < min ? nb : min);
-}
 
 float			rsqrt(float number)
 {

@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2019/12/16 16:14:55 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/03 16:06:51 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,7 +139,7 @@ void            get_object(t_cube *data, t_mesh *mesh, char *file)
 {
     char    *path;
 
-    path = ft_strjoin("/home/maboye/42/doom-nukem/object/", file);
+    path = ft_strjoin("/Users/maboye/sgoinfre/doom-nukem/object/", file);
     path = ft_strfjoin(path, ".obj", 1);
     if (!(data->str = ft_readfile(path)))
     {

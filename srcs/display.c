@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/01/29 18:41:16 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/03 18:57:12 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,6 +20,9 @@ static t_triangle	mmvtriangle(t_mat matrix, t_triangle triangle)
 	tresult.v[0] = mat_mulvector(matrix, triangle.v[0]);
 	tresult.v[1] = mat_mulvector(matrix, triangle.v[1]);
 	tresult.v[2] = mat_mulvector(matrix, triangle.v[2]);
+	tresult.t[0] = triangle.t[0];
+	tresult.t[1] = triangle.t[1];
+	tresult.t[2] = triangle.t[2];
 	return (tresult);
 }
 
@@ -83,7 +86,8 @@ static void			cube3d(t_cube *data)
 	data->matrix.world = mat_mulmatrix(data->matrix.rotx, data->matrix.roty);
 	data->matrix.world = mat_mulmatrix(data->matrix.world, data->matrix.rotz);
 	data->matrix.world = mat_mulmatrix(data->matrix.world, data->matrix.trans);
-	camrot = mat_mulmatrix(data->matrix.camroty, data->matrix.camrotx);
+	camrot = mat_mulmatrix(data->matrix.camrotx, data->matrix.camroty);
+	data->vector.target = (t_vec3d){ 0, 0, 1, 1 };
 	data->vector.lookdir = mat_mulvector(camrot, data->vector.target);
 	data->vector.target = vecadd(data->vector.camera, data->vector.lookdir);
 	pointatmatrix(&data->matrix.pointat, data->vector.camera,
@@ -103,7 +107,6 @@ void				display(t_cube *data)
 	i = -1;
 	while (++i < W_LEN)
 		data->dbuffer[i] = 0;
-	data->vector.target = (t_vec3d){ 0, 0, 1, 1 };
 	data->vector.right = (t_vec3d){ 1, 0, 0, 1 };
 	data->vector.up = (t_vec3d){ 0, 1, 0, 1 };
 	cube3d(data);

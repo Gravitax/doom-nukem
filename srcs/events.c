@@ -6,13 +6,13 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2019/12/16 16:06:16 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/03 18:07:48 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "../includes/cube3d.h"
 
-static void		rotation(t_cube *data)
+static void		world_rotation(t_cube *data)
 {
 	if (data->event.key.keysym.sym == SDLK_t
 	|| data->event.key.keysym.sym == SDLK_y)
@@ -34,26 +34,12 @@ static void		rotation(t_cube *data)
 	}
 }
 
-static void		camera(t_cube *data)
+static void		camera_rotation(t_cube *data)
 {
-
-	data->vector.forward = vecmul(data->vector.lookdir, 0.1f);
-	if (data->event.key.keysym.sym == SDLK_UP)
-		data->vector.camera = vecsub(data->vector.camera, vecmul(data->vector.up, 0.1f));
-	else if (data->event.key.keysym.sym == SDLK_DOWN)
-		data->vector.camera = vecadd(data->vector.camera, vecmul(data->vector.up, 0.1f));
-	else if (data->event.key.keysym.sym == SDLK_q)
-		data->vector.camera = vecsub(data->vector.camera, vecmul(data->vector.right, 0.1f));
-	else if (data->event.key.keysym.sym == SDLK_d)
-		data->vector.camera = vecadd(data->vector.camera, vecmul(data->vector.right, 0.1f));
-	else if (data->event.key.keysym.sym == SDLK_z)
-		data->vector.camera = vecadd(data->vector.camera, data->vector.forward);
-	else if (data->event.key.keysym.sym == SDLK_s)
-		data->vector.camera = vecsub(data->vector.camera, data->vector.forward);
-	else if (data->event.key.keysym.sym == SDLK_a
+	if (data->event.key.keysym.sym == SDLK_q
 	|| data->event.key.keysym.sym == SDLK_e)
 	{
-		data->yaw += (data->event.key.keysym.sym == SDLK_a ? 0.02f : -0.02f);
+		data->yaw += (data->event.key.keysym.sym == SDLK_q ? 0.02f : -0.02f);
 		rotymatrix(&data->matrix.camroty, data->yaw);
 	}
 	else if (data->event.key.keysym.sym == SDLK_r
@@ -62,6 +48,24 @@ static void		camera(t_cube *data)
 		data->xaw += (data->event.key.keysym.sym == SDLK_f ? 0.02f : -0.02f);
 		rotxmatrix(&data->matrix.camrotx, data->xaw);
 	}
+}
+
+static void		camera(t_cube *data)
+{
+
+	data->vector.forward = vecmul(data->vector.lookdir, 0.1f);
+	if (data->event.key.keysym.sym == SDLK_UP)
+		data->vector.camera = vecsub(data->vector.camera, vecmul(data->vector.up, 0.1f));
+	else if (data->event.key.keysym.sym == SDLK_DOWN)
+		data->vector.camera = vecadd(data->vector.camera, vecmul(data->vector.up, 0.1f));
+	else if (data->event.key.keysym.sym == SDLK_a)
+		data->vector.camera = vecsub(data->vector.camera, vecmul(data->vector.right, 0.1f));
+	else if (data->event.key.keysym.sym == SDLK_d)
+		data->vector.camera = vecadd(data->vector.camera, vecmul(data->vector.right, 0.1f));
+	else if (data->event.key.keysym.sym == SDLK_w)
+		data->vector.camera = vecadd(data->vector.camera, data->vector.forward);
+	else if (data->event.key.keysym.sym == SDLK_s)
+		data->vector.camera = vecsub(data->vector.camera, data->vector.forward);
 }
 
 void			events(t_cube *data)
@@ -78,8 +82,9 @@ void			events(t_cube *data)
 				data->zoom += 0.1f;
 			else if (data->event.key.keysym.sym == SDLK_i)
 				data->zoom -= data->zoom < 0.1f ? 0 : 0.1f;
-			rotation(data);
+			world_rotation(data);
 			camera(data);
+			camera_rotation(data);
 		}
 	}
 }

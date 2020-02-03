@@ -6,7 +6,7 @@
 #    By: maboye <maboye@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/31 12:01:33 by maboye            #+#    #+#              #
-#    Updated: 2020/01/29 16:55:31 by maboye           ###   ########.fr        #
+#    Updated: 2020/02/03 18:50:49 by maboye           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -42,7 +42,6 @@ SRC		=	cliptriangle.c \
 			filltriangletext2.c \
 			matrix.c \
 			parser.c \
-			quicksort.c \
 			rasterisation.c \
 			tools.c \
 			vector.c \

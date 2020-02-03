@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/01/29 18:47:47 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/03 18:50:33 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-# include <SDL2/SDL.h>
+# include <SDL.h>
 
 # include "../libft/libft.h"
 
@@ -205,10 +205,6 @@ typedef struct	s_mainenv
 	SDL_Renderer	*renderer;
 	SDL_Window		*pwindow;
 }				t_cube;
-
-int				ft_max(int nb, int max);
-int				ft_min(int nb, int min);
-void			ft_quicksort(t_triangle *buffer, int start, int size);
 
 void			clean_exit(t_cube *data, char *str, int token);
 float			rsqrt(float number);

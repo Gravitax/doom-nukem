@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/01/29 16:55:26 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/03 17:06:40 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -45,9 +45,9 @@ int             cliptriangle(t_cube *data)
     i = -1;
     while (++i < 3)
     {
-        if (data->cdata.in.v[i].z > 10)
+        if (data->cdata.in.v[i].z > 16)
         {
-            printf("z: %f\n", data->cdata.in.v[i].z);
+            //printf("z: %f\n", data->cdata.in.v[i].z);
             return (0);
         }
         test_vertex(data, data->cdata.in.v[i], data->cdata.in.t[i]);

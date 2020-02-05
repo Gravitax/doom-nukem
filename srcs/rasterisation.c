@@ -95,7 +95,8 @@ static void     projection(t_cube *data, t_triangle *buffer)
 {
     while (data->index--)
 	{
-	    filltriangletext(data, buffer[data->index]);
+	    //filltriangletext(data, buffer[data->index]);
+        filltriangletomato(data, buffer[data->index]);
 	    drawtriangle(data, buffer[data->index], 0xffffffff);
 	}
 }

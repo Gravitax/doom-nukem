@@ -12,26 +12,25 @@
 
 #include "../includes/cube3d.h"
 
+t_vec2d         textinterpol(t_vec2d v1, t_vec2d v2, float alpha)
+{
+    return ((t_vec2d){ ft_interpol(v1.u, v2.u, alpha),
+        ft_interpol(v1.v, v2.v, alpha),
+        ft_interpol(v1.w, v2.w, alpha) });
+}
+
 static void     output_one(t_cube *data)
 {
     data->cdata.out[0].v[0] = data->cdata.ipoints[0];
     data->cdata.out[0].t[0] = data->cdata.itex[0];
     data->cdata.out[0].v[1] = vecintersectplane(data,
         data->cdata.ipoints[0], data->cdata.opoints[0]);
-    data->cdata.out[0].t[1].u = data->t * (data->cdata.otex[0].u
-        - data->cdata.itex[0].u) + data->cdata.itex[0].u;
-    data->cdata.out[0].t[1].v = data->t * (data->cdata.otex[0].v
-        - data->cdata.itex[0].v) + data->cdata.itex[0].v;
-    data->cdata.out[0].t[1].w = data->t * (data->cdata.otex[0].w
-        - data->cdata.itex[0].w) + data->cdata.itex[0].w;
+    data->cdata.out[0].t[1] = textinterpol(data->cdata.itex[0],
+        data->cdata.otex[0], data->t);
     data->cdata.out[0].v[2] = vecintersectplane(data,
         data->cdata.ipoints[0], data->cdata.opoints[1]);
-    data->cdata.out[0].t[2].u = data->t * (data->cdata.otex[1].u
-        - data->cdata.itex[0].u) + data->cdata.itex[0].u;
-    data->cdata.out[0].t[2].v = data->t * (data->cdata.otex[1].v
-        - data->cdata.itex[0].v) + data->cdata.itex[0].v;
-    data->cdata.out[0].t[2].w = data->t * (data->cdata.otex[1].w
-        - data->cdata.itex[0].w) + data->cdata.itex[0].w;
+    data->cdata.out[0].t[2] = textinterpol(data->cdata.itex[0],
+        data->cdata.otex[1], data->t);
 }
 
 static void     output_two(t_cube *data)
@@ -42,25 +41,17 @@ static void     output_two(t_cube *data)
     data->cdata.out[0].t[1] = data->cdata.itex[1];
     data->cdata.out[0].v[2] = vecintersectplane(data,
         data->cdata.ipoints[0], data->cdata.opoints[0]);
-    data->cdata.out[0].t[2].u = data->t * (data->cdata.otex[0].u
-        - data->cdata.itex[0].u) + data->cdata.itex[0].u;
-    data->cdata.out[0].t[2].v = data->t * (data->cdata.otex[0].v
-        - data->cdata.itex[0].v) + data->cdata.itex[0].v;
-    data->cdata.out[0].t[2].w = data->t * (data->cdata.otex[0].w
-        - data->cdata.itex[0].w) + data->cdata.itex[0].w;
-
+    data->cdata.out[0].t[2] = textinterpol(data->cdata.itex[0],
+        data->cdata.otex[0], data->t);
     data->cdata.out[1].v[0] = data->cdata.ipoints[1];
     data->cdata.out[1].t[0] = data->cdata.itex[1];
     data->cdata.out[1].v[1] = data->cdata.out[0].v[2];
     data->cdata.out[1].t[1] = data->cdata.out[0].t[2];
     data->cdata.out[1].v[2] = vecintersectplane(data,
         data->cdata.ipoints[1], data->cdata.opoints[0]);
-    data->cdata.out[1].t[2].u = data->t * (data->cdata.otex[0].u
-        - data->cdata.itex[1].u) + data->cdata.itex[1].u;
-    data->cdata.out[1].t[2].v = data->t * (data->cdata.otex[0].v
-        - data->cdata.itex[1].v) + data->cdata.itex[1].v;
-    data->cdata.out[1].t[2].w = data->t * (data->cdata.otex[0].w
-        - data->cdata.itex[1].w) + data->cdata.itex[1].w;
+    data->cdata.out[1].t[2] = textinterpol(data->cdata.itex[1],
+        data->cdata.otex[0], data->t);
+    //alpha = (tmp.v[1].y - tmp.v[0].y) / (tmp.v[2].y - tmp.v[0].y);
 }
 
 int             newtriangles(t_cube *data)

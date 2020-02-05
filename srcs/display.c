@@ -20,9 +20,6 @@ static t_triangle	mmvtriangle(t_mat matrix, t_triangle triangle)
 	tresult.v[0] = mat_mulvector(matrix, triangle.v[0]);
 	tresult.v[1] = mat_mulvector(matrix, triangle.v[1]);
 	tresult.v[2] = mat_mulvector(matrix, triangle.v[2]);
-	tresult.t[0] = triangle.t[0];
-	tresult.t[1] = triangle.t[1];
-	tresult.t[2] = triangle.t[2];
 	return (tresult);
 }
 

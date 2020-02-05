@@ -12,6 +12,11 @@
 
 #include "../includes/cube3d.h"
 
+float			ft_interpol(float nb1, float nb2, float alpha)
+{
+	return (nb1 + (nb2 - nb1) * alpha);
+}
+
 float			rsqrt(float number)
 {
 	float	i;
@@ -109,10 +114,10 @@ void			putpixel(t_cube *data, int x, int y, int color)
 			|| y < 0 || y >= W_HEIGHT)
 		return ;
 	pos = x + (y * W_WIDTH);
- 	if (data->fdata.texw >= data->dbuffer[pos])
-	{
+ 	// if (data->fdata.texw >= data->dbuffer[pos])
+	// {
 		pixels = (unsigned int *)data->screen->pixels;
 		pixels[pos] = color;
-		data->dbuffer[pos] = data->fdata.texw;
-	}
+		//data->dbuffer[pos] = data->fdata.texw;
+	//}
 }

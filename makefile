@@ -45,7 +45,8 @@ SRC		=	cliptriangle.c \
 			rasterisation.c \
 			tools.c \
 			vector.c \
-			main.c
+			main.c \
+			tomato.c
 
 INC		=	cube3d.h
 

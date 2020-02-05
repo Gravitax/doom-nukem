@@ -12,15 +12,15 @@
 
 #include "../includes/cube3d.h"
 
-static float    vecdist(t_cube *data, t_vec3d p)
+static int      inside_plane(t_cube *data, t_vec3d p)
 {
-    return (vecdotproduct(data->cdata.nplane, p)
-        - vecdotproduct(data->cdata.nplane, data->cdata.pplane));
+    return (vecdotproduct(data->cdata.nplane, data->cdata.pplane)
+        - vecdotproduct(data->cdata.nplane, p) < 0);
 }
 
 static void     test_vertex(t_cube *data, t_vec3d vertex, t_vec2d texture)
 {
-    if (vecdist(data, vertex) >= 0)
+    if (inside_plane(data, vertex))
     {
         data->cdata.ipoints[data->cdata.inside] = vertex;
         data->cdata.itex[data->cdata.inside] = texture;
@@ -40,8 +40,8 @@ int             cliptriangle(t_cube *data)
 
     data->cdata.inside = 0;
     data->cdata.outside = 0;
-    data->cdata.out[0].color = data->cdata.in.color;
-    data->cdata.out[1].color = data->cdata.in.color;
+    data->cdata.out[0] = data->cdata.in;
+    data->cdata.out[1] = data->cdata.in;
     i = -1;
     while (++i < 3)
     {

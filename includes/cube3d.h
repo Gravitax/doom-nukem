@@ -16,7 +16,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-# include <SDL.h>
+# include <SDL2/SDL.h>
 
 # include "../libft/libft.h"
 
@@ -95,8 +95,18 @@ typedef struct	s_matrixlist
 
 typedef struct	s_filltriangle
 {
-	int			ax;
-	int			bx;
+	t_vec2d		left;
+	t_vec2d		right;
+	t_vec2d		bot;
+	t_vec2d		stepr;
+	t_vec2d		stepl;
+	t_vec2d		tc;
+	int			xstart;
+	int			ystart;
+	int			xend;
+	int			yend;
+	float		ax;
+	float		bx;
 	int			dx1;
 	int			dy1;
 	int			dx2;
@@ -206,7 +216,9 @@ typedef struct	s_mainenv
 	SDL_Window		*pwindow;
 }				t_cube;
 
+void			filltriangletomato(t_cube *data, t_triangle triangle);
 void			clean_exit(t_cube *data, char *str, int token);
+float			ft_interpol(float nb1, float nb2, float alpha);
 float			rsqrt(float number);
 
 int             cliptriangle(t_cube *data);

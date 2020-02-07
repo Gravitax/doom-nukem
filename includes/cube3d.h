@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/03 18:50:33 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/07 06:01:19 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,7 +16,7 @@
 # include <stdio.h>
 # include <stdlib.h>
 
-# include <SDL2/SDL.h>
+# include <SDL.h>
 
 # include "../libft/libft.h"
 
@@ -57,7 +57,6 @@ typedef struct	s_vectorlist
 	t_vec3d		right;
 	t_vec3d		target;
 	t_vec3d		up;
-	t_vec3d		*vertex;
 }				t_vector;
 
 typedef struct	s_triangle
@@ -95,16 +94,6 @@ typedef struct	s_matrixlist
 
 typedef struct	s_filltriangle
 {
-	t_vec2d		left;
-	t_vec2d		right;
-	t_vec2d		bot;
-	t_vec2d		stepr;
-	t_vec2d		stepl;
-	t_vec2d		tc;
-	int			xstart;
-	int			ystart;
-	int			xend;
-	int			yend;
 	float		ax;
 	float		bx;
 	int			dx1;
@@ -114,16 +103,16 @@ typedef struct	s_filltriangle
 	float		daxstep;
 	float		dbxstep;
 	float		du1;
-	float		du2;
 	float		du1step;
-	float		du2step;
 	float		dv1;
-	float		dv2;
 	float		dv1step;
-	float		dv2step;
 	float		dw1;
-	float		dw2;
 	float		dw1step;
+	float		du2;
+	float		du2step;
+	float		dv2;
+	float		dv2step;
+	float		dw2;
 	float		dw2step;
 	float		texu;
 	float		texv;
@@ -152,38 +141,10 @@ typedef struct	s_clipptriangle
 
 typedef struct	s_variables
 {
-	// int				ac;
-	// int				i;
-	// int				index;
-	// int				fps;
-	// int				ti;
-	// int				vi;
-	// double			coef;
-	// float			etime;
-	// float			frame_start;
-	// float			far;
-	// float			fov;
-	// float			near;
-	// float			t;
-	// float			xfactor;
-	// float			yfactor;
-	// float			xtheta;
-	// float			ytheta;
-	// float			ztheta;
-	// float			xaw;
-	// float			yaw;
-	// float			zoom;
-}				t_var;
-
-
-typedef struct	s_mainenv
-{
 	int				ac;
 	int				i;
 	int				index;
 	int				fps;
-	int				ti;
-	int				vi;
 	double			coef;
 	float			etime;
 	float			frame_start;
@@ -198,14 +159,27 @@ typedef struct	s_mainenv
 	float			ztheta;
 	float			xaw;
 	float			yaw;
-	float			zoom;
+}				t_var;
+
+typedef struct	s_parser
+{
+	int				t;
+	int				tx;
+	int				v;
+	t_vec2d			*texture;
+	t_vec3d			*vertex;
+}				t_pdata;
+
+typedef struct	s_mainenv
+{
 	float			dbuffer[W_LEN + 1];
 	char			*str;
 	char			**tab;
 	t_cdata			cdata;
 	t_fdata			fdata;
-	t_var			variable;
 	t_matrix		matrix;
+	t_pdata			pdata;
+	t_var			var;
 	t_vector		vector;
 	t_mesh			mesh[20];
 	SDL_Event		event;
@@ -216,7 +190,6 @@ typedef struct	s_mainenv
 	SDL_Window		*pwindow;
 }				t_cube;
 
-void			filltriangletomato(t_cube *data, t_triangle triangle);
 void			clean_exit(t_cube *data, char *str, int token);
 float			ft_interpol(float nb1, float nb2, float alpha);
 float			rsqrt(float number);
@@ -237,6 +210,7 @@ void            get_object(t_cube *data, t_mesh *mesh, char *file);
 SDL_Surface		*new_surface(int w, int h);
 uint32_t		get_pixel(t_cube *data, float samplex, float sampley);
 void			putpixel(t_cube *data, int x, int y, int color);
+void            swap_floats(float *a, float *b);
 
 void			multiply_matrix(t_vec3d i, t_vec3d *o, t_mat m);
 void			pmatrix(t_cube *data);

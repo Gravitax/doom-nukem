@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 16:46:36 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/03 16:50:54 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/07 00:52:58 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,11 +26,11 @@ static void     output_one(t_cube *data)
     data->cdata.out[0].v[1] = vecintersectplane(data,
         data->cdata.ipoints[0], data->cdata.opoints[0]);
     data->cdata.out[0].t[1] = textinterpol(data->cdata.itex[0],
-        data->cdata.otex[0], data->t);
+        data->cdata.otex[0], data->var.t);
     data->cdata.out[0].v[2] = vecintersectplane(data,
         data->cdata.ipoints[0], data->cdata.opoints[1]);
     data->cdata.out[0].t[2] = textinterpol(data->cdata.itex[0],
-        data->cdata.otex[1], data->t);
+        data->cdata.otex[1], data->var.t);
 }
 
 static void     output_two(t_cube *data)
@@ -42,7 +42,7 @@ static void     output_two(t_cube *data)
     data->cdata.out[0].v[2] = vecintersectplane(data,
         data->cdata.ipoints[0], data->cdata.opoints[0]);
     data->cdata.out[0].t[2] = textinterpol(data->cdata.itex[0],
-        data->cdata.otex[0], data->t);
+        data->cdata.otex[0], data->var.t);
     data->cdata.out[1].v[0] = data->cdata.ipoints[1];
     data->cdata.out[1].t[0] = data->cdata.itex[1];
     data->cdata.out[1].v[1] = data->cdata.out[0].v[2];
@@ -50,7 +50,7 @@ static void     output_two(t_cube *data)
     data->cdata.out[1].v[2] = vecintersectplane(data,
         data->cdata.ipoints[1], data->cdata.opoints[0]);
     data->cdata.out[1].t[2] = textinterpol(data->cdata.itex[1],
-        data->cdata.otex[0], data->t);
+        data->cdata.otex[0], data->var.t);
     //alpha = (tmp.v[1].y - tmp.v[0].y) / (tmp.v[2].y - tmp.v[0].y);
 }
 

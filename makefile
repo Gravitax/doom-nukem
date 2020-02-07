@@ -6,7 +6,7 @@
 #    By: maboye <maboye@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/31 12:01:33 by maboye            #+#    #+#              #
-#    Updated: 2020/02/03 18:50:49 by maboye           ###   ########.fr        #
+#    Updated: 2020/02/07 05:58:19 by maboye           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -45,8 +45,7 @@ SRC		=	cliptriangle.c \
 			rasterisation.c \
 			tools.c \
 			vector.c \
-			main.c \
-			tomato.c
+			main.c
 
 INC		=	cube3d.h
 

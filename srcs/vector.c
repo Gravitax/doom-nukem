@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/03 18:44:58 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/07 00:56:57 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ t_vec3d			vecintersectplane(t_cube *data, t_vec3d startl, t_vec3d endl)
 	ad = vecdotproduct(startl, data->cdata.nplane);
 	bd = vecdotproduct(endl, data->cdata.nplane);
 	dplane = vecdotproduct(data->cdata.nplane, data->cdata.pplane);
-	data->t = (dplane - ad) / (bd - ad);
-	intersectline = vecmul(vecsub(endl, startl), data->t);
+	data->var.t = (dplane - ad) / (bd - ad);
+	intersectline = vecmul(vecsub(endl, startl), data->var.t);
 	return (vecadd(startl, intersectline));
 }

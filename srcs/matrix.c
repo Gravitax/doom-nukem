@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2019/12/04 22:15:02 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/07 00:56:11 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,12 +18,13 @@ void			pmatrix(t_cube *data)
 	float	fovrad;
 
 	ratio = (float)W_HEIGHT / (float)W_WIDTH;
-	fovrad = 1 / tanf(((data->fov * 0.5f) / 180) * 3.14159f);
+	fovrad = 1 / tanf(((data->var.fov * 0.5f) / 180) * 3.14159f);
 	data->matrix.proj.m[0][0] = ratio * fovrad;
 	data->matrix.proj.m[1][1] = fovrad;
-	data->matrix.proj.m[2][2] = data->far / (data->far - data->near);
-	data->matrix.proj.m[3][2] = (-data->far * data->near)
-		/ (data->far - data->near);
+	data->matrix.proj.m[2][2] = data->var.far
+		/ (data->var.far - data->var.near);
+	data->matrix.proj.m[3][2] = (-data->var.far * data->var.near)
+		/ (data->var.far - data->var.near);
 	data->matrix.proj.m[2][3] = 1;
 }
 

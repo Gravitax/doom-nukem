@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/03 18:50:25 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/07 05:50:32 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,10 +37,10 @@ static void		free_usages(t_cube *data)
 
 	if (data->str)
 		ft_strdel(&data->str);
-	if (data->vector.vertex)
-		ft_memdel((void **)&data->vector.vertex);
+	if (data->pdata.vertex)
+		ft_memdel((void **)&data->pdata.vertex);
 	i = -1;
-	while (++i < data-> ac - 1)
+	while (++i < data->var.ac - 1)
 	{
 		if (data->tab && data->tab[i])
 			ft_memdel((void **)&data->tab[i]);
@@ -95,10 +95,10 @@ uint32_t		get_pixel(t_cube *data, float samplex, float sampley)
 	int				sy;
 	uint8_t			*p;
 
-	sx = samplex * data->texture->w;
 	if (samplex > 1 || sampley > 1
 			|| samplex < 0 || sampley < 0)
 		return (0);
+	sx = samplex * data->texture->w;
 	sy = sampley * data->texture->h;
 	p = (uint8_t *)data->texture->pixels + sy * data->texture->pitch
 		+ sx * data->texture->format->BytesPerPixel;
@@ -120,4 +120,13 @@ void			putpixel(t_cube *data, int x, int y, int color)
 		pixels[pos] = color;
 		//data->dbuffer[pos] = data->fdata.texw;
 	//}
+}
+
+void            swap_floats(float *a, float *b)
+{
+	float	c;
+
+	c = *a;
+	*a = *b;
+	*b = c;
 }

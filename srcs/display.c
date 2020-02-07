@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/03 18:57:12 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/07 06:30:53 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,7 +63,7 @@ static void			display_mesh(t_cube *data)
 	t_triangle	ttrans;
 
 	i = -1;
-	while (++i < data->ac - 1)
+	while (++i < data->var.ac - 1)
 	{
 		j = data->mesh[i].size + 1;
 		data->texture = data->mesh[i].texture;

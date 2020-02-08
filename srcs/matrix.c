@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/07 00:56:11 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/08 00:19:33 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -67,14 +67,6 @@ void			transmatrix(t_mat *matrix, float x, float y, float z)
 	matrix->m[3][0] = x;
 	matrix->m[3][1] = y;
 	matrix->m[3][2] = z;
-	matrix->m[3][3] = 1;
-}
-
-void			identitymatrix(t_mat *matrix)
-{
-	matrix->m[0][0] = 1;
-	matrix->m[1][1] = 1;
-	matrix->m[2][2] = 1;
 	matrix->m[3][3] = 1;
 }
 

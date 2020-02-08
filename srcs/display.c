@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/07 06:30:53 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/08 00:24:35 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,15 +76,17 @@ static void			display_mesh(t_cube *data)
 	}
 }
 
-static void			cube3d(t_cube *data)
+static void			load_world(t_cube *data)
 {
 	t_mat		camrot;
 
+	data->vector.right = (t_vec3d){ 1, 0, 0, 1 };
+	data->vector.target = (t_vec3d){ 0, 0, 1, 1 };
+	data->vector.up = (t_vec3d){ 0, 1, 0, 1 };
 	data->matrix.world = mat_mulmatrix(data->matrix.rotx, data->matrix.roty);
 	data->matrix.world = mat_mulmatrix(data->matrix.world, data->matrix.rotz);
 	data->matrix.world = mat_mulmatrix(data->matrix.world, data->matrix.trans);
 	camrot = mat_mulmatrix(data->matrix.camrotx, data->matrix.camroty);
-	data->vector.target = (t_vec3d){ 0, 0, 1, 1 };
 	data->vector.lookdir = mat_mulvector(camrot, data->vector.target);
 	data->vector.target = vecadd(data->vector.camera, data->vector.lookdir);
 	pointatmatrix(&data->matrix.pointat, data->vector.camera,
@@ -92,30 +94,35 @@ static void			cube3d(t_cube *data)
 	quickinversematrix(&data->matrix.view, data->matrix.pointat);
 	data->vector.right = mat_mulvector(camrot, data->vector.right);
 	data->vector.up = mat_mulvector(camrot, data->vector.up);
-	display_mesh(data);
 }
 
-void				display(t_cube *data)
+static void			display_renderer(t_cube *data)
 {
 	int				i;
 	unsigned int	*pixels;
 	SDL_Rect		rect;
 
-	i = -1;
-	while (++i < W_LEN)
-		data->dbuffer[i] = 0;
-	data->vector.right = (t_vec3d){ 1, 0, 0, 1 };
-	data->vector.up = (t_vec3d){ 0, 1, 0, 1 };
-	cube3d(data);
 	rect.h = W_HEIGHT;
 	rect.w = W_WIDTH;
 	rect.x = 0;
 	rect.y = 0;
 	data->window = SDL_CreateTextureFromSurface(data->renderer, data->screen);
 	pixels = (unsigned int *)data->screen->pixels;
-	while (i--)
+	while (++i < W_LEN)
 		pixels[i] = (0 | 0 << 8 | 0 << 16 | 255 << 24);
 	SDL_RenderCopy(data->renderer, data->window, NULL, &rect);
 	SDL_DestroyTexture(data->window);
 	SDL_RenderPresent(data->renderer);
+}
+
+void				display(t_cube *data)
+{
+	int				i;
+
+	i = -1;
+	while (++i < W_LEN)
+		data->dbuffer[i] = 0;
+	load_world(data);
+	display_mesh(data);
+	display_renderer(data);
 }

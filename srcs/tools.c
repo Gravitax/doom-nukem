@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/07 05:50:32 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/08 00:45:51 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -108,18 +108,12 @@ uint32_t		get_pixel(t_cube *data, float samplex, float sampley)
 void			putpixel(t_cube *data, int x, int y, int color)
 {
 	unsigned int	*pixels;
-	int				pos;
 
 	if (x < 0 || x >= W_WIDTH
 			|| y < 0 || y >= W_HEIGHT)
 		return ;
-	pos = x + (y * W_WIDTH);
- 	// if (data->fdata.texw >= data->dbuffer[pos])
-	// {
-		pixels = (unsigned int *)data->screen->pixels;
-		pixels[pos] = color;
-		//data->dbuffer[pos] = data->fdata.texw;
-	//}
+	pixels = (unsigned int *)data->screen->pixels;
+	pixels[x + y * W_WIDTH] = color;
 }
 
 void            swap_floats(float *a, float *b)

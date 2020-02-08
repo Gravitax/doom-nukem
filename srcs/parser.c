@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/07 05:56:35 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/08 20:19:20 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -176,6 +176,20 @@ static void     parsefile(t_cube *data, t_mesh *mesh)
     }
 }
 
+static void     parsing(t_cube *data, t_mesh *mesh)
+{
+    if (!(data->pdata.vertex = (t_vec3d *)ft_memalloc(sizeof(t_vec3d)
+            * get_mallocsize(data, 0, 'v', '\n'))))
+        clean_exit(data, "cube3d: malloc error", 0);
+    data->pdata.t = 0;
+    data->pdata.tx = 0;
+    data->pdata.v = 0;
+    parsefile(data, mesh);
+    ft_memdel((void **)&data->pdata.texture);
+    ft_memdel((void **)&data->pdata.vertex);
+    ft_strdel(&data->str);
+}
+
 void            get_object(t_cube *data, t_mesh *mesh, char *file)
 {
     char    *path;
@@ -188,14 +202,5 @@ void            get_object(t_cube *data, t_mesh *mesh, char *file)
         clean_exit(data, "cube3d: read error", 0);
     }
     ft_strdel(&path);
-    if (!(data->pdata.vertex = (t_vec3d *)ft_memalloc(sizeof(t_vec3d)
-            * get_mallocsize(data, 0, 'v', '\n'))))
-        clean_exit(data, "cube3d: malloc error", 0);
-    data->pdata.t = 0;
-    data->pdata.tx = 0;
-    data->pdata.v = 0;
-    parsefile(data, mesh);
-    ft_memdel((void **)&data->pdata.texture);
-    ft_memdel((void **)&data->pdata.vertex);
-    ft_strdel(&data->str);
+    parsing(data, mesh);
 }

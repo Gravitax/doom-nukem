@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/07 06:01:19 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/08 21:16:26 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,9 +68,11 @@ typedef struct	s_triangle
 
 typedef struct	s_mesh
 {
+	int			size;
+	int			text;
+	char		*name;
 	t_triangle	*object;
 	SDL_Surface	*texture;
-	int			size;
 }				t_mesh;
 
 typedef struct	s_matrix
@@ -94,35 +96,32 @@ typedef struct	s_matrixlist
 
 typedef struct	s_filltriangle
 {
+	int			x1;
+	int			y1;
+	int			x2;
+	int			y2;
 	float		ax;
 	float		bx;
-	int			dx1;
-	int			dy1;
-	int			dx2;
-	int			dy2;
-	float		daxstep;
-	float		dbxstep;
+	float		dax;
+	float		dbx;
+	float		u1;
+	float		v1;
+	float		w1;
 	float		du1;
-	float		du1step;
 	float		dv1;
-	float		dv1step;
 	float		dw1;
-	float		dw1step;
+	float		u2;
+	float		v2;
+	float		w2;
 	float		du2;
-	float		du2step;
 	float		dv2;
-	float		dv2step;
 	float		dw2;
-	float		dw2step;
-	float		texu;
-	float		texv;
-	float		texw;
-	float		texsu;
-	float		texsv;
-	float		texsw;
-	float		texeu;
-	float		texev;
-	float		texew;
+	float		su;
+	float		sv;
+	float		sw;
+	float		eu;
+	float		ev;
+	float		ew;
 }				t_fdata;
 
 typedef struct	s_clipptriangle
@@ -142,6 +141,7 @@ typedef struct	s_clipptriangle
 typedef struct	s_variables
 {
 	int				ac;
+	int				color;
 	int				i;
 	int				index;
 	int				fps;
@@ -163,6 +163,7 @@ typedef struct	s_variables
 
 typedef struct	s_parser
 {
+	int				s;
 	int				t;
 	int				tx;
 	int				v;

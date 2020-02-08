@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/07 06:30:01 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/08 01:19:22 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,10 +74,10 @@ static void		triangletransform(t_cube *data, t_triangle *triangle)
 	i = -1;
 	while (++i < 3)
 	{
-		// triangle->t[i].u = triangle->t[i].u / triangle->v[i].w;
-		// triangle->t[i].v = triangle->t[i].v / triangle->v[i].w;
-		//triangle->t[i].w = 1 / triangle->v[i].w;
-        triangle->v[i] = vecdiv(triangle->v[i], triangle->v[i].w);
+		triangle->t[i].u /= triangle->v[i].w;
+		triangle->t[i].v /= triangle->v[i].w;
+		triangle->t[i].w = 1 / triangle->v[i].w;
+        triangle->v[i] = vecdiv(triangle->v[i], triangle->v[i].w / 2);
         triangle->v[i].x *= -1;
         triangle->v[i].y *= -1;
         triangle->v[i] = vecadd(triangle->v[i], data->vector.offset);
@@ -91,7 +91,6 @@ static void     projection(t_cube *data, t_triangle *buffer)
     while (data->var.index--)
 	{
 	    filltriangletext(data, buffer[data->var.index]);
-        //filltriangletomato(data, buffer[data->index]);
 	    drawtriangle(data, buffer[data->var.index], 0xffffffff);
 	}
 }

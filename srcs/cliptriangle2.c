@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 16:46:36 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/07 00:52:58 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/08 00:26:47 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,6 @@ static void     output_two(t_cube *data)
         data->cdata.ipoints[1], data->cdata.opoints[0]);
     data->cdata.out[1].t[2] = textinterpol(data->cdata.itex[1],
         data->cdata.otex[0], data->var.t);
-    //alpha = (tmp.v[1].y - tmp.v[0].y) / (tmp.v[2].y - tmp.v[0].y);
 }
 
 int             newtriangles(t_cube *data)

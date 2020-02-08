@@ -6,7 +6,7 @@
 #    By: maboye <maboye@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/31 12:01:33 by maboye            #+#    #+#              #
-#    Updated: 2020/02/07 05:58:19 by maboye           ###   ########.fr        #
+#    Updated: 2020/02/08 19:53:34 by maboye           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -43,6 +43,7 @@ SRC		=	cliptriangle.c \
 			matrix.c \
 			parser.c \
 			rasterisation.c \
+			testparser.c \
 			tools.c \
 			vector.c \
 			main.c

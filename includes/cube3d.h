@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/08 21:16:26 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/10 17:30:19 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,13 +66,23 @@ typedef struct	s_triangle
 	int			color;
 }				t_triangle;
 
+typedef struct	s_object
+{
+	int			size;
+	int			text;
+	char		*name;
+	SDL_Surface	*texture;
+	t_triangle	*object;
+}				t_obj;
+
 typedef struct	s_mesh
 {
 	int			size;
 	int			text;
 	char		*name;
-	t_triangle	*object;
 	SDL_Surface	*texture;
+	t_triangle	*object;
+	t_obj		**object2;
 }				t_mesh;
 
 typedef struct	s_matrix
@@ -142,9 +152,11 @@ typedef struct	s_variables
 {
 	int				ac;
 	int				color;
+	int				fps;
 	int				i;
 	int				index;
-	int				fps;
+	int				iobj;
+	int				texture;
 	double			coef;
 	float			etime;
 	float			frame_start;
@@ -163,10 +175,17 @@ typedef struct	s_variables
 
 typedef struct	s_parser
 {
-	int				s;
 	int				t;
 	int				tx;
 	int				v;
+
+	int				io;
+	int				s;
+	int				vcount;
+	int				vtcount;
+	int				vi;
+	int				vti;
+	char			c[8];
 	t_vec2d			*texture;
 	t_vec3d			*vertex;
 }				t_pdata;
@@ -190,6 +209,10 @@ typedef struct	s_mainenv
 	SDL_Renderer	*renderer;
 	SDL_Window		*pwindow;
 }				t_cube;
+
+void            parse_error(t_cube *data);
+void            skip_line(char *str, int *start);
+void            handle_vertex(t_cube *data, t_mesh *mesh, int *start);
 
 void			clean_exit(t_cube *data, char *str, int token);
 float			ft_interpol(float nb1, float nb2, float alpha);

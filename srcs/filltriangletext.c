@@ -6,13 +6,13 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/08 01:15:47 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
-static void     init_toptriangle(t_cube *data, t_triangle tmp)
+static void     init_toptriangle(t_doom *data, t_triangle tmp)
 {
     data->fdata.u1 = tmp.t[1].u - tmp.t[0].u;
     data->fdata.v1 = tmp.t[1].v - tmp.t[0].v;
@@ -26,7 +26,7 @@ static void     init_toptriangle(t_cube *data, t_triangle tmp)
     data->fdata.y2 = tmp.v[2].y - tmp.v[0].y;
 }
 
-static void     init_bottomtriangle(t_cube *data, t_triangle tmp)
+static void     init_bottomtriangle(t_doom *data, t_triangle tmp)
 {
     data->fdata.u1 = tmp.t[2].u - tmp.t[1].u;
     data->fdata.v1 = tmp.t[2].v - tmp.t[1].v;
@@ -63,7 +63,7 @@ static void     swap_vertex(t_triangle *tmp)
 	}
 }
 
-void			filltriangletext(t_cube *data, t_triangle triangle)
+void			filltriangletext(t_doom *data, t_triangle triangle)
 {
     t_triangle  tmp;
 

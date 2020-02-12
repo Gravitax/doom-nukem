@@ -6,11 +6,11 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/08 00:45:51 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 16:39:07 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
 float			ft_interpol(float nb1, float nb2, float alpha)
 {
@@ -31,25 +31,23 @@ float			rsqrt(float number)
 	return (conv.f);
 }
 
-static void		free_usages(t_cube *data)
+static void		free_usages(t_doom *data)
 {
 	int	i;
+	int	j;
 
-	if (data->str)
-		ft_strdel(&data->str);
-	if (data->pdata.vertex)
-		ft_memdel((void **)&data->pdata.vertex);
 	i = -1;
 	while (++i < data->var.ac - 1)
 	{
 		if (data->tab && data->tab[i])
 			ft_memdel((void **)&data->tab[i]);
-		if (data->mesh[i].object)
-			ft_memdel((void **)&data->mesh[i].object);
+		j = data->scene[i].iobj;
+		while (j--)
+			ft_memdel((void **)&data->scene[i].object[j]);
 	}
 }
 
-void			clean_exit(t_cube *data, char *str, int token)
+void			clean_exit(t_doom *data, char *str, int token)
 {
 	if (data)
 	{
@@ -70,7 +68,7 @@ void			clean_exit(t_cube *data, char *str, int token)
 	exit(token ? EXIT_SUCCESS : EXIT_FAILURE);
 }
 
-void			drawtriangle(t_cube *data, t_triangle triangle, int color)
+void			drawtriangle(t_doom *data, t_triangle triangle, int color)
 {
 	drawline(data, triangle.v[0], triangle.v[1], color);
 	drawline(data, triangle.v[1], triangle.v[2], color);
@@ -89,7 +87,7 @@ SDL_Surface		*new_surface(int w, int h)
 				color[0], color[1], color[2], color[3]));
 }
 
-uint32_t		get_pixel(t_cube *data, float samplex, float sampley)
+uint32_t		get_pixel(t_doom *data, float samplex, float sampley)
 {
 	int				sx;
 	int				sy;
@@ -105,7 +103,7 @@ uint32_t		get_pixel(t_cube *data, float samplex, float sampley)
 	return (p[2] | p[1] << 8 | p[0] << 16 | 255 << 24);
 }
 
-void			putpixel(t_cube *data, int x, int y, int color)
+void			putpixel(t_doom *data, int x, int y, int color)
 {
 	unsigned int	*pixels;
 

@@ -1,17 +1,17 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   cube3d.h                                           :+:      :+:    :+:   */
+/*   doom.h                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/10 17:30:19 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 16:15:09 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#ifndef CUBE3D_H
-# define CUBE3D_H
+#ifndef DOOM_H
+# define DOOM_H
 
 # include <stdio.h>
 # include <stdlib.h>
@@ -68,22 +68,18 @@ typedef struct	s_triangle
 
 typedef struct	s_object
 {
+	int			i;
 	int			size;
-	int			text;
 	char		*name;
-	SDL_Surface	*texture;
-	t_triangle	*object;
+	t_triangle	*mesh;
 }				t_obj;
 
-typedef struct	s_mesh
+typedef struct	s_scene
 {
-	int			size;
-	int			text;
-	char		*name;
+	int			iobj;
 	SDL_Surface	*texture;
-	t_triangle	*object;
-	t_obj		**object2;
-}				t_mesh;
+	t_obj		**object;
+}				t_scene;
 
 typedef struct	s_matrix
 {
@@ -155,7 +151,6 @@ typedef struct	s_variables
 	int				fps;
 	int				i;
 	int				index;
-	int				iobj;
 	int				texture;
 	double			coef;
 	float			etime;
@@ -175,12 +170,10 @@ typedef struct	s_variables
 
 typedef struct	s_parser
 {
-	int				t;
-	int				tx;
-	int				v;
-
 	int				io;
 	int				s;
+	int				size;
+	int				ti;
 	int				vcount;
 	int				vtcount;
 	int				vi;
@@ -201,43 +194,43 @@ typedef struct	s_mainenv
 	t_pdata			pdata;
 	t_var			var;
 	t_vector		vector;
-	t_mesh			mesh[20];
+	t_scene			scene[20];
 	SDL_Event		event;
 	SDL_Surface		*screen;
 	SDL_Surface		*texture;
 	SDL_Texture		*window;
 	SDL_Renderer	*renderer;
 	SDL_Window		*pwindow;
-}				t_cube;
+}				t_doom;
 
-void            parse_error(t_cube *data);
+void            parse_error(t_doom *data);
 void            skip_line(char *str, int *start);
-void            handle_vertex(t_cube *data, t_mesh *mesh, int *start);
+void            handle_vertex(t_doom *data, t_scene *scene, int *start);
 
-void			clean_exit(t_cube *data, char *str, int token);
+void			clean_exit(t_doom *data, char *str, int token);
 float			ft_interpol(float nb1, float nb2, float alpha);
 float			rsqrt(float number);
 
-int             cliptriangle(t_cube *data);
-int             newtriangles(t_cube *data);
-void            rasterisation(t_cube *data, t_triangle triangle);
+int             cliptriangle(t_doom *data);
+int             newtriangles(t_doom *data);
+void            rasterisation(t_doom *data, t_triangle triangle);
 
-void			display(t_cube *data);
-void			drawline(t_cube *data, t_vec3d p1, t_vec3d p2, int color);
-void			drawtriangle(t_cube *data, t_triangle triangle, int color);
-void			events(t_cube *data);
-void            filltriangletext(t_cube *data, t_triangle triangle);
-void            fill_top(t_cube *data, t_triangle triangle);
-void            fill_bottom(t_cube *data, t_triangle triangle);
-void            get_object(t_cube *data, t_mesh *mesh, char *file);
+void			display(t_doom *data);
+void			drawline(t_doom *data, t_vec3d p1, t_vec3d p2, int color);
+void			drawtriangle(t_doom *data, t_triangle triangle, int color);
+void			events(t_doom *data);
+void            filltriangletext(t_doom *data, t_triangle triangle);
+void            fill_top(t_doom *data, t_triangle triangle);
+void            fill_bottom(t_doom *data, t_triangle triangle);
+void            get_object(t_doom *data, t_scene *scene, char *file);
 
 SDL_Surface		*new_surface(int w, int h);
-uint32_t		get_pixel(t_cube *data, float samplex, float sampley);
-void			putpixel(t_cube *data, int x, int y, int color);
+uint32_t		get_pixel(t_doom *data, float samplex, float sampley);
+void			putpixel(t_doom *data, int x, int y, int color);
 void            swap_floats(float *a, float *b);
 
 void			multiply_matrix(t_vec3d i, t_vec3d *o, t_mat m);
-void			pmatrix(t_cube *data);
+void			pmatrix(t_doom *data);
 void			rotxmatrix(t_mat *matrix, float angle);
 void			rotymatrix(t_mat *matrix, float angle);
 void			rotzmatrix(t_mat *matrix, float angle);
@@ -254,7 +247,7 @@ float			veclen(t_vec3d v);
 t_vec3d			vecadd(t_vec3d v1, t_vec3d v2);
 t_vec3d			vecsub(t_vec3d v1, t_vec3d v2);
 t_vec3d			veccrossproduct(t_vec3d v1, t_vec3d v2);
-t_vec3d         vecintersectplane(t_cube *data, t_vec3d startl, t_vec3d endl);
+t_vec3d         vecintersectplane(t_doom *data, t_vec3d startl, t_vec3d endl);
 t_vec3d			vecnormalise(t_vec3d v);
 t_vec3d			vecmul(t_vec3d v, float k);
 t_vec3d			vecdiv(t_vec3d v, float k);

@@ -6,13 +6,13 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/08 00:19:33 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
-void			pmatrix(t_cube *data)
+void			pmatrix(t_doom *data)
 {
 	float	ratio;
 	float	fovrad;

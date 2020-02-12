@@ -6,11 +6,11 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/01/29 16:46:36 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/08 00:26:47 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
 t_vec2d         textinterpol(t_vec2d v1, t_vec2d v2, float alpha)
 {
@@ -19,7 +19,7 @@ t_vec2d         textinterpol(t_vec2d v1, t_vec2d v2, float alpha)
         ft_interpol(v1.w, v2.w, alpha) });
 }
 
-static void     output_one(t_cube *data)
+static void     output_one(t_doom *data)
 {
     data->cdata.out[0].v[0] = data->cdata.ipoints[0];
     data->cdata.out[0].t[0] = data->cdata.itex[0];
@@ -33,7 +33,7 @@ static void     output_one(t_cube *data)
         data->cdata.otex[1], data->var.t);
 }
 
-static void     output_two(t_cube *data)
+static void     output_two(t_doom *data)
 {
     data->cdata.out[0].v[0] = data->cdata.ipoints[0];
     data->cdata.out[0].t[0] = data->cdata.itex[0];
@@ -53,7 +53,7 @@ static void     output_two(t_cube *data)
         data->cdata.otex[0], data->var.t);
 }
 
-int             newtriangles(t_cube *data)
+int             newtriangles(t_doom *data)
 {
     t_triangle  tmp;
 

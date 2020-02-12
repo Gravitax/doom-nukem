@@ -6,11 +6,11 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/07 00:56:57 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
 
 t_vec3d			vecadd(t_vec3d v1, t_vec3d v2)
@@ -62,7 +62,7 @@ t_vec3d			vecdiv(t_vec3d v, float k)
     return ((t_vec3d){ v.x / k, v.y / k, v.z / k });
 }
 
-t_vec3d			vecintersectplane(t_cube *data, t_vec3d startl, t_vec3d endl)
+t_vec3d			vecintersectplane(t_doom *data, t_vec3d startl, t_vec3d endl)
 {
 	float		ad;
 	float		bd;

@@ -6,13 +6,13 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/08 01:20:52 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
-static void     get_texcoor(t_cube *data, float t, int i, int j)
+static void     get_texcoor(t_doom *data, float t, int i, int j)
 {
     int     pos;
     float   u;
@@ -32,7 +32,7 @@ static void     get_texcoor(t_cube *data, float t, int i, int j)
     }    
 }
 
-static void     filltriangle(t_cube *data, int i)
+static void     filltriangle(t_doom *data, int i)
 {
     int     j;
     float   t;
@@ -56,7 +56,7 @@ static void     filltriangle(t_cube *data, int i)
 	}
 }
 
-static void     init_step(t_cube *data)
+static void     init_step(t_doom *data)
 {
     data->fdata.dax = data->fdata.x1 / (float)abs(data->fdata.y1);
     data->fdata.dbx = data->fdata.x2 / (float)abs(data->fdata.y2);
@@ -68,7 +68,7 @@ static void     init_step(t_cube *data)
     data->fdata.dw2 = data->fdata.w2 / (float)abs(data->fdata.y2);
 }
 
-void            fill_bottom(t_cube *data, t_triangle tmp)
+void            fill_bottom(t_doom *data, t_triangle tmp)
 {
     int     i;
     int     end;
@@ -90,7 +90,7 @@ void            fill_bottom(t_cube *data, t_triangle tmp)
     }
 }
 
-void            fill_top(t_cube *data, t_triangle tmp)
+void            fill_top(t_doom *data, t_triangle tmp)
 {
     int     i;
     int     end;

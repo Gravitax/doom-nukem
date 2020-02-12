@@ -6,7 +6,7 @@
 #    By: maboye <maboye@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/31 12:01:33 by maboye            #+#    #+#              #
-#    Updated: 2020/02/08 19:53:34 by maboye           ###   ########.fr        #
+#    Updated: 2020/02/12 15:55:58 by maboye           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -24,7 +24,7 @@ UP 		=	\033[A
 CUT 	=	\033[K
 
 # project
-NAME	=	cube3d
+NAME	=	doom-nukem
 OS		=	$(shell uname)
 
 # directories
@@ -42,13 +42,13 @@ SRC		=	cliptriangle.c \
 			filltriangletext2.c \
 			matrix.c \
 			parser.c \
+			parser2.c \
 			rasterisation.c \
-			testparser.c \
 			tools.c \
 			vector.c \
 			main.c
 
-INC		=	cube3d.h
+INC		=	doom.h
 
 OBJ		=	$(addprefix $(OBJDIR)/,$(SRC:.c=.o))
 HEADER	=	$(addprefix $(INCDIR)/,$(INC))

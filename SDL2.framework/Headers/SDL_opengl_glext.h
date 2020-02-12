@@ -9578,8 +9578,8 @@ GLAPI void APIENTRY glTextureImage3DMultisampleCoverageNV (GLuint texture, GLenu
 #define GL_DOT_PRODUCT_TEXTURE_2D_NV      0x86EE
 #define GL_DOT_PRODUCT_TEXTURE_CUBE_MAP_NV 0x86F0
 #define GL_DOT_PRODUCT_DIFFUSE_CUBE_MAP_NV 0x86F1
-#define GL_DOT_PRODUCT_REFLECT_CUBE_MAP_NV 0x86F2
-#define GL_DOT_PRODUCT_CONST_EYE_REFLECT_CUBE_MAP_NV 0x86F3
+#define GL_DOT_PRODUCT_REFLECt_doom_MAP_NV 0x86F2
+#define GL_DOT_PRODUCT_CONST_EYE_REFLECt_doom_MAP_NV 0x86F3
 #define GL_HILO_NV                        0x86F4
 #define GL_DSDT_NV                        0x86F5
 #define GL_DSDT_MAG_NV                    0x86F6

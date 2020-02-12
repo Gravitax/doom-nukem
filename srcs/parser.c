@@ -6,68 +6,98 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/08 20:19:20 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 16:40:14 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
-static int      get_mallocsize(t_cube *data, int start, char c, char end)
+void            parse_error(t_doom *data)
 {
-    int ret;
-
-    ret = -1;
-    while (data->str && data->str[start])
-    {
-        if (data->str[start] == c)
-        {
-            while (data->str && data->str[start] && data->str[start] != '\n')
-                ++start;
-            ++ret;
-            if (data->str[++start] == c)
-                continue ;
-            else if (data->str[start] == end)
-                return (ret + 1);
-            else
-                clean_exit(data, "cube3d: parse error11", 0);
-        }
-        else
-            clean_exit(data, "cube3d: parse error12", 0);
-    }
-    return (ret);
+    if (data->str)
+		ft_strdel(&data->str);
+    if (data->var.texture == 1)
+        if (data->pdata.texture)
+            ft_memdel((void **)&data->pdata.texture);
+	if (data->pdata.vertex)
+		ft_memdel((void **)&data->pdata.vertex);
+    clean_exit(data, "doom-nukem: parse error", 0);
 }
 
-static void     get_triangle(t_cube *data, int i, t_mesh *mesh)
+void            skip_line(char *str, int *start)
 {
-    int         nb;
-    int         v[3];
-    int         t[3];
+    while (str[*start] && str[*start] != '\n')
+        ++(*start);
+    if (str[*start] == '\n')
+        ++(*start);
+}
 
-    nb = 0;
-    while (nb < 3 && data->str && data->str[i])
+static void     handle_objectname(t_doom *data, t_obj *object, int *start)
+{
+    int     end;
+
+    object->i = data->pdata.io;
+    while (isblank(data->str[++(*start)]))
+        ;
+    end = *start;
+    skip_line(data->str, &end);
+    if (data->str[--end] == '\n')
+        --end;
+    if (!(object->name = ft_strsub(data->str, *start, end - *start)))
+        parse_error(data);
+    skip_line(data->str, start);
+}
+
+static void     stock_tvertex(t_doom *data, int *t, int *i, int nb)
+{
+    while (isblank(data->str[++(*i)]))
+        ;
+    if (isdigit(data->str[*i]))
     {
-        if (data->str[i] == ' ')
-            ++i;
-        else if (ft_isdigit(data->str[i]))
-        {
-            v[nb] = atoi(data->str + i - 1);
-            while (ft_isdigit(data->str[i]))
-                ++i;
-            if (data->str[i] == '/')
-            {
-                ++i;
-                t[nb] = atoi(data->str + i);
-                while (ft_isdigit(data->str[i]))
-                    ++i;
-            }
-            ++nb;
-            
-        }
-        else if (data->str[i])
-            clean_exit(data, "cube3d: parse error10", 0);
+        *t = atoi(data->str + *i - 1);
+        while (isdigit(data->str[*i]))
+            ++(*i);
     }
-    mesh->size = data->pdata.t;
-    mesh->object[data->pdata.t++] = (t_triangle){
+    else
+        parse_error(data);
+}
+
+static void     stock_vertex(t_doom *data, t_obj *object, int *i)
+{
+    int     nb;
+    int     tpossible;
+    int     v[3];
+    int     t[3];
+
+    if (data->pdata.io < 0)
+        parse_error(data);
+    tpossible = 0;
+    nb = 0;
+    while (nb < 3 && data->str && data->str[*i])
+    {
+        while (isblank(data->str[++(*i)]))
+            ;
+        if (tpossible == 1 && data->str[*i] == '/')
+        {
+            stock_tvertex(data, &t[nb], i, nb);
+            tpossible = 0;
+        }
+        else if (isdigit(data->str[*i]))
+        {
+            v[nb] = atoi(data->str + *i - 1);
+            while (isdigit(data->str[*i]))
+                ++(*i);
+            tpossible = 1;
+            ++nb;
+        }
+        else
+            parse_error(data);
+    }
+    data->pdata.s = 0;
+    while (isblank(data->str[++(*i)]))
+        ;
+    object->size = data->pdata.size;
+    object->mesh[data->pdata.ti++] = (t_triangle){
         data->pdata.vertex[v[0] - 1],
         data->pdata.vertex[v[1] - 1],
         data->pdata.vertex[v[2] - 1],
@@ -76,121 +106,81 @@ static void     get_triangle(t_cube *data, int i, t_mesh *mesh)
         data->pdata.texture[t[2] - 1] };
 }
 
-static void     get_vertex(t_cube *data, int i, int end)
+static void     handle_char(t_doom *data, int *i, char c, t_scene *scene)
 {
-    int         nb;
-    float       v[3];
-
-    nb = 0;
-    while (nb < end && data->str && data->str[i])
+    printf("char: [%c]\n", c);
+    if (c == '\n' || c == '#')
+        skip_line(data->str, i);
+    else if (c == 's')
     {
-        if (data->str[i] == '-' || data->str[i] == ' ')
-            ++i;
-        else if (ft_isdigit(data->str[i]))
-        {
-           v[nb++] = atof(data->str + i - 1); 
-           while (ft_isdigit(data->str[i]) || data->str[i] == '.')
-                ++i;
-        }
-        else if (data->str[i])
-            clean_exit(data, "cube3d: parse error9", 0);
+        data->pdata.s = 1;
+        skip_line(data->str, i);
     }
-    if (end == 3)
-        data->pdata.vertex[data->pdata.v++] = (t_vec3d){ v[0], v[1], v[2], 1 };
-    else if (end == 2)
-        data->pdata.texture[data->pdata.tx++] = (t_vec2d){ v[0], v[1], 1 };
+    else if (c == 'o')
+        handle_objectname(data, scene->object[++data->pdata.io], i);
+    else if (c == 'v')
+        handle_vertex(data, scene, i);
+    else if (c == 'f')
+        stock_vertex(data, scene->object[data->pdata.io], i);
+    else if (c == ' ' || c == '\t')
+        while (isblank(data->str[*i]))
+            ++(*i);
 }
 
-static void     fstep(t_cube *data, int x, int i, t_mesh *mesh)
-{
-    get_vertex(data, i, 2);
-    if (!(mesh->object = (t_triangle *)ft_memalloc(sizeof(t_triangle)
-            * get_mallocsize(data, x, 'f', '\0'))))
-        clean_exit(data, "cube3d: malloc error", 0);
-    while (data->str && data->str[x])
-    {
-        if (data->str[x] == 'f')
-        {
-            i = x;
-            while (data->str && data->str[x] && data->str[x] != '\n')
-                ++x;
-            if (data->str[++x] == 'f')
-                get_triangle(data, i + 2, mesh);
-            else if (data->str[x] == '\n' || data->str[x] == '\0')
-                return (get_triangle(data, i + 2, mesh));
-            else
-                clean_exit(data, "cube3d: parse error7", 0);
-        }
-        else
-            clean_exit(data, "cube3d: parse error8", 0);
-    }
-}
-
-static void     tstep(t_cube *data, int x, int i, t_mesh *mesh)
-{
-    get_vertex(data, i, 3);
-    if (!(data->pdata.texture = (t_vec2d *)ft_memalloc(sizeof(t_vec2d)
-            * get_mallocsize(data, x, 't', '\n'))))
-        clean_exit(data, "cube3d: malloc error", 0);
-    while (data->str && data->str[x])
-    {
-        if (data->str[x] == 't')
-        {
-            i = x;
-            while (data->str && data->str[x] && data->str[x] != '\n')
-                ++x;
-            if (data->str[++x] == 't')
-                get_vertex(data, i + 2, 2);
-            else if (data->str[x] == '\n')
-                return (fstep(data, x + 1, i + 2, mesh));
-            else
-                clean_exit(data, "cube3d: parse error3", 0);
-        }
-        else
-            clean_exit(data, "cube3d: parse error4", 0);
-    }
-}
-
-static void     parsefile(t_cube *data, t_mesh *mesh)
+static void     parsing(t_doom *data, t_scene *mesh)
 {
     int     i;
-    int     x;
+    int     j;
+    int     error;
 
-    x = 0;
-    while (data->str && data->str[x])
+    ft_memset(&data->pdata, 0, sizeof(t_pdata));
+    data->pdata.io = -1;
+    data->pdata.c[0] = '\n';
+    data->pdata.c[1] = '#';
+    data->pdata.c[2] = 'o';
+    data->pdata.c[3] = 'v';
+    data->pdata.c[4] = 's';
+    data->pdata.c[5] = 'f';
+    data->pdata.c[6] = ' ';
+    data->pdata.c[7] = '\t';
+    error = 1;
+    i = 0;
+    while (data->str[i])
     {
-        if (data->str[x] == 'v')
-        {
-            i = x;
-            while (data->str && data->str[x] && data->str[x] != '\n')
-                ++x;
-            if (data->str[++x] == 'v')
-                get_vertex(data, i + 2, 3);
-            else if (data->str[x] == '\n')
-                return (tstep(data, x + 1, i + 2, mesh));
-            else
-                clean_exit(data, "cube3d: parse error1", 0);
-        }
-        else
-            clean_exit(data, "cube3d: parse error2", 0);
+        j = -1;
+        while (++j < 8)
+            if (data->str[i] == data->pdata.c[j])
+            {
+                handle_char(data, &i, data->pdata.c[j], mesh);
+                error = 0;
+            }
+        if (error == 1)
+            parse_error(data);
     }
 }
 
-static void     parsing(t_cube *data, t_mesh *mesh)
+static void     get_totalobject(t_doom *data, t_scene *scene)
 {
-    if (!(data->pdata.vertex = (t_vec3d *)ft_memalloc(sizeof(t_vec3d)
-            * get_mallocsize(data, 0, 'v', '\n'))))
-        clean_exit(data, "cube3d: malloc error", 0);
-    data->pdata.t = 0;
-    data->pdata.tx = 0;
-    data->pdata.v = 0;
-    parsefile(data, mesh);
-    ft_memdel((void **)&data->pdata.texture);
-    ft_memdel((void **)&data->pdata.vertex);
-    ft_strdel(&data->str);
+    int     i;
+
+    i = 0;
+    scene->iobj = 0;
+    while (data->str[i])
+    {
+        while (isblank(data->str[i]))
+            ++i;
+        if (data->str[i] == 'o')
+            ++data->scene->iobj;
+        skip_line(data->str, &i);
+    }
+    if (data->scene->iobj == 0)
+        data->scene->iobj = 1;
+    if (!(data->scene->object = (t_obj **)ft_memalloc(sizeof(t_obj *)
+    * data->scene->iobj)))
+        parse_error(data);
 }
 
-void            get_object(t_cube *data, t_mesh *mesh, char *file)
+void            get_object(t_doom *data, t_scene *scene, char *file)
 {
     char    *path;
 
@@ -202,5 +192,11 @@ void            get_object(t_cube *data, t_mesh *mesh, char *file)
         clean_exit(data, "cube3d: read error", 0);
     }
     ft_strdel(&path);
-    parsing(data, mesh);
+    data->var.texture = 0;
+    get_totalobject(data, scene);
+    parsing(data, scene);
+    ft_strdel(&data->str);
+    if (data->var.texture == 1)
+        ft_memdel((void **)&data->pdata.texture);
+    ft_memdel((void **)&data->pdata.vertex);
 }

@@ -6,13 +6,13 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/07 00:57:43 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
-static void		world_rotation(t_cube *data)
+static void		world_rotation(t_doom *data)
 {
 	if (data->event.key.keysym.sym == SDLK_t
 	|| data->event.key.keysym.sym == SDLK_y)
@@ -34,7 +34,7 @@ static void		world_rotation(t_cube *data)
 	}
 }
 
-static void		camera_rotation(t_cube *data)
+static void		camera_rotation(t_doom *data)
 {
 	if (data->event.key.keysym.sym == SDLK_q
 	|| data->event.key.keysym.sym == SDLK_e)
@@ -50,7 +50,7 @@ static void		camera_rotation(t_cube *data)
 	}
 }
 
-static void		camera(t_cube *data)
+static void		camera(t_doom *data)
 {
 
 	data->vector.forward = vecmul(data->vector.lookdir, 0.1f);
@@ -68,7 +68,7 @@ static void		camera(t_cube *data)
 		data->vector.camera = vecsub(data->vector.camera, data->vector.forward);
 }
 
-void			events(t_cube *data)
+void			events(t_doom *data)
 {
 	while (SDL_PollEvent(&data->event))
 	{

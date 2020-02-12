@@ -6,19 +6,19 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/03 17:06:40 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
-static int      inside_plane(t_cube *data, t_vec3d p)
+static int      inside_plane(t_doom *data, t_vec3d p)
 {
     return (vecdotproduct(data->cdata.nplane, data->cdata.pplane)
         - vecdotproduct(data->cdata.nplane, p) < 0);
 }
 
-static void     test_vertex(t_cube *data, t_vec3d vertex, t_vec2d texture)
+static void     test_vertex(t_doom *data, t_vec3d vertex, t_vec2d texture)
 {
     if (inside_plane(data, vertex))
     {
@@ -34,7 +34,7 @@ static void     test_vertex(t_cube *data, t_vec3d vertex, t_vec2d texture)
     }   
 }
 
-int             cliptriangle(t_cube *data)
+int             cliptriangle(t_doom *data)
 {
     int i;
 

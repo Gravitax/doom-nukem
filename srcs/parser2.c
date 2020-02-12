@@ -1,27 +1,26 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   testparser2.c                                      :+:      :+:    :+:   */
+/*   parser2.c                                          :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/10 17:22:35 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 16:40:42 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
-static void     get_size(t_cube *data, int *start)
+static void     get_size(t_doom *data, int *start)
 {
     while (data->str && data->str[*start])
     {
+        printf("c: [%c]\n", data->str[*start]);    
         if (data->str[*start] == '#' || data->str[*start] == 'o'
         || data->str[*start] == 's' || data->str[*start] == 'f')
             skip_line(data->str, start);
-        if (data->str[*start] == '\n')
-            ++(*start);
-        if (data->str[*start] == 'v')
+        else if (data->str[*start] == 'v')
         {
             if (data->str[*start + 1] == 't')
                 ++data->pdata.vtcount;
@@ -29,12 +28,14 @@ static void     get_size(t_cube *data, int *start)
                 ++data->pdata.vcount;
             skip_line(data->str, start);
         }
-        while (isblank(data->str[*start]))
+        else if (isspace(data->str[*start]))
             ++(*start);
+        else
+            parse_error(data);
     }
 }
 
-static void     init_ptrmallocsize(t_cube *data, int start)
+static void     init_ptrmallocsize(t_doom *data, int start)
 {
     get_size(data, &start);
     if (!(data->pdata.vertex = (t_vec3d *)ft_memalloc(sizeof(t_vec3d)
@@ -49,7 +50,7 @@ static void     init_ptrmallocsize(t_cube *data, int start)
         parse_error(data);
 }
 
-static void     stock_vertex(t_cube *data, float *v, int vnb)
+static void     stock_vertex(t_doom *data, float *v, int vnb)
 {
     if (vnb == 2)
         data->pdata.texture[data->pdata.vti++] = (t_vec2d){ v[0], v[1], 1 };
@@ -57,7 +58,7 @@ static void     stock_vertex(t_cube *data, float *v, int vnb)
         data->pdata.vertex[data->pdata.vi++] = (t_vec3d){ v[0], v[1], v[2], 1 };
 }
 
-static void     get_vertex(t_cube *data, int *start, int vnb)
+static void     get_vertex(t_doom *data, int *start, int vnb)
 {
     int     nb;
     float   v[3];
@@ -81,14 +82,19 @@ static void     get_vertex(t_cube *data, int *start, int vnb)
     (nb == vnb - 1) ? stock_vertex(data, v, vnb) : parse_error(data);
 }
 
-void            handle_vertex(t_cube *data, t_mesh *mesh, int *start)
+void            handle_vertex(t_doom *data, t_scene *scene, int *start)
 {
     if (data->pdata.s == 1)
         parse_error(data);
+    puts("1");
     if (data->pdata.vcount == 0)
         init_ptrmallocsize(data, *start);
+    puts("2");
     if (data->str[*start + 1] == 't')
-        get_vertex(data, ++(*start), 2);
+    {
+        ++(*start);
+        get_vertex(data, start, 2);
+    }
     else
         get_vertex(data, start, 3);
     while (isblank(data->str[++(*start)]))

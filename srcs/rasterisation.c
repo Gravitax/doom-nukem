@@ -6,13 +6,13 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/08 01:19:22 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
-static void     set_properplane(t_cube *data, int plane)
+static void     set_properplane(t_doom *data, int plane)
 {
     if (plane == 0)
     {
@@ -36,7 +36,7 @@ static void     set_properplane(t_cube *data, int plane)
     }
 }
 
-static void     tabpopfront(t_cube *data, t_triangle *buffer)
+static void     tabpopfront(t_doom *data, t_triangle *buffer)
 {
     int zindex;
     int i;
@@ -48,7 +48,7 @@ static void     tabpopfront(t_cube *data, t_triangle *buffer)
     --data->var.index;
 }
 
-static void     clip_byplane(t_cube *data, t_triangle *buffer, int *ntriangles)
+static void     clip_byplane(t_doom *data, t_triangle *buffer, int *ntriangles)
 {
     int         i;
     int         trianglestoadd;
@@ -67,7 +67,7 @@ static void     clip_byplane(t_cube *data, t_triangle *buffer, int *ntriangles)
     *ntriangles += trianglestoadd;
 }
 
-static void		triangletransform(t_cube *data, t_triangle *triangle)
+static void		triangletransform(t_doom *data, t_triangle *triangle)
 {
 	int		i;
 
@@ -86,7 +86,7 @@ static void		triangletransform(t_cube *data, t_triangle *triangle)
 	}
 }
 
-static void     projection(t_cube *data, t_triangle *buffer)
+static void     projection(t_doom *data, t_triangle *buffer)
 {
     while (data->var.index--)
 	{
@@ -95,7 +95,7 @@ static void     projection(t_cube *data, t_triangle *buffer)
 	}
 }
 
-void            rasterisation(t_cube *data, t_triangle triangle)
+void            rasterisation(t_doom *data, t_triangle triangle)
 {
     int         ntriangles;
     int         plane;

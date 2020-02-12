@@ -6,13 +6,13 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/07 05:31:58 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 16:15:19 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
-static void		init_sdl(t_cube *data)
+static void		init_sdl(t_doom *data)
 {
 	if (SDL_Init(SDL_INIT_VIDEO) == -1)
 		clean_exit(data, "cube3d: SDL_Init fail", 0);
@@ -22,7 +22,7 @@ static void		init_sdl(t_cube *data)
 			W_WIDTH, W_HEIGHT, 0);
 }
 
-static int		get_fps(t_cube *data)
+static int		get_fps(t_doom *data)
 {
 	int	pframe;
 
@@ -37,7 +37,7 @@ static int		get_fps(t_cube *data)
 	return (0);
 }
 
-static void		init_matrix(t_cube *data)
+static void		init_matrix(t_doom *data)
 {
 	data->var.xfactor = 0.5f * (float)W_WIDTH;
 	data->var.yfactor = 0.5f * (float)W_HEIGHT;
@@ -59,23 +59,21 @@ static void		init_matrix(t_cube *data)
 	transmatrix(&data->matrix.trans, 0, 0, 2);
 }
 
-static void		init_data(t_cube *data)
+static void		init_data(t_doom *data)
 {
 	int		i;
 
 	i = -1;
 	while (++i  < data->var.ac - 1)
 	{
-		get_object(data, &data->mesh[i], data->tab[i]);
-		if (data->mesh[i].size == 0 || data->mesh[i].object == NULL)
-			clean_exit(data, "cube3d: load object error", 0);
-		if (!(data->mesh[i].texture = SDL_LoadBMP("img/doom.bmp")))
+		get_object(data, &data->scene[i], data->tab[i]);
+		if (!(data->scene[i].texture = SDL_LoadBMP("img/doom.bmp")))
 			clean_exit(data, "cube3d: loading sprite doom error", 0);
 	}
 	init_matrix(data);
 }
 
-static void		launcher(t_cube *data)
+static void		launcher(t_doom *data)
 {
 	init_sdl(data);
 	if (data->pwindow)
@@ -102,11 +100,11 @@ static void		launcher(t_cube *data)
 
 int				main(int ac, char **av)
 {
-	t_cube	data;
+	t_doom	data;
 
 	if (ac > 1)
 	{
-		ft_memset(&data, 0, sizeof(t_cube));
+		ft_memset(&data, 0, sizeof(t_doom));
 		if (!(data.tab = (char **)ft_memalloc(sizeof(char *) * ac)))
 			clean_exit(NULL, "cube3d: malloc error", 0);
 		while (++data.var.ac < ac)

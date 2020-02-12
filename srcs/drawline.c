@@ -6,13 +6,13 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/07 00:54:05 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
-static void		draw_horizontal(t_cube *data, t_vec3d p1, t_vec3d p2, int c)
+static void		draw_horizontal(t_doom *data, t_vec3d p1, t_vec3d p2, int c)
 {
 	int			x;
 	int			y;
@@ -28,7 +28,7 @@ static void		draw_horizontal(t_cube *data, t_vec3d p1, t_vec3d p2, int c)
 	}
 }
 
-static void		draw_vertical(t_cube *data, t_vec3d p1, t_vec3d p2, int c)
+static void		draw_vertical(t_doom *data, t_vec3d p1, t_vec3d p2, int c)
 {
 	int			x;
 	int			y;
@@ -45,7 +45,7 @@ static void		draw_vertical(t_cube *data, t_vec3d p1, t_vec3d p2, int c)
 	}
 }
 
-void			drawline(t_cube *data, t_vec3d p1, t_vec3d p2, int color)
+void			drawline(t_doom *data, t_vec3d p1, t_vec3d p2, int color)
 {
 	data->var.i = 0;
 	if (p2.x == p1.x)

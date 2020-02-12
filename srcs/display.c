@@ -6,11 +6,11 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/08 00:24:35 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/12 16:15:55 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "../includes/cube3d.h"
+#include "../includes/doom.h"
 
 static t_triangle	mmvtriangle(t_mat matrix, t_triangle triangle)
 {
@@ -23,7 +23,7 @@ static t_triangle	mmvtriangle(t_mat matrix, t_triangle triangle)
 	return (tresult);
 }
 
-static void			clipping(t_cube *data, t_triangle ttrans)
+static void			clipping(t_doom *data, t_triangle ttrans)
 {
 	int			i;
 	int			clippedtriangle;
@@ -37,7 +37,7 @@ static void			clipping(t_cube *data, t_triangle ttrans)
 		rasterisation(data, mmvtriangle(data->matrix.proj, data->cdata.out[i]));
 }
 
-static int			to_draw(t_cube *data, t_triangle *triangle)
+static int			to_draw(t_doom *data, t_triangle *triangle)
 {
 	int		nb;
 	float	dp;
@@ -56,27 +56,33 @@ static int			to_draw(t_cube *data, t_triangle *triangle)
 	return (vecdotproduct(n, camray) < 0);
 }
 
-static void			display_mesh(t_cube *data)
+static void			display_mesh(t_doom *data)
 {
 	int			i;
 	int			j;
+	int			k;
 	t_triangle	ttrans;
 
 	i = -1;
 	while (++i < data->var.ac - 1)
 	{
-		j = data->mesh[i].size + 1;
-		data->texture = data->mesh[i].texture;
-		while (j--)
+		k = data->scene[i].iobj + 1;
+		data->texture = data->scene[i].texture;
+		while (k--)
 		{
-			ttrans = mmvtriangle(data->matrix.world, data->mesh[i].object[j]);
-			if (to_draw(data, &ttrans) == 1)
-				clipping(data, ttrans);
+			j = data->scene[i].object[k]->size + 1;
+			while (j--)
+			{
+				ttrans = mmvtriangle(data->matrix.world,
+					data->scene[i].object[k]->mesh[j]);
+				if (to_draw(data, &ttrans) == 1)
+					clipping(data, ttrans);
+			}
 		}
 	}
 }
 
-static void			load_world(t_cube *data)
+static void			load_world(t_doom *data)
 {
 	t_mat		camrot;
 
@@ -96,7 +102,7 @@ static void			load_world(t_cube *data)
 	data->vector.up = mat_mulvector(camrot, data->vector.up);
 }
 
-static void			display_renderer(t_cube *data)
+static void			display_renderer(t_doom *data)
 {
 	int				i;
 	unsigned int	*pixels;
@@ -115,7 +121,7 @@ static void			display_renderer(t_cube *data)
 	SDL_RenderPresent(data->renderer);
 }
 
-void				display(t_cube *data)
+void				display(t_doom *data)
 {
 	int				i;
 

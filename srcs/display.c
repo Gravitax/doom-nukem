@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/12 16:15:55 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/21 21:28:46 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,15 +66,16 @@ static void			display_mesh(t_doom *data)
 	i = -1;
 	while (++i < data->var.ac - 1)
 	{
-		k = data->scene[i].iobj + 1;
+		j = data->scene[i].iobj;
 		data->texture = data->scene[i].texture;
-		while (k--)
+		while (j--)
 		{
-			j = data->scene[i].object[k]->size + 1;
-			while (j--)
+			k = data->scene[i].object[j].size + 1;
+			while (k--)
 			{
+				data->var.texture = data->scene[i].object[j].texture;
 				ttrans = mmvtriangle(data->matrix.world,
-					data->scene[i].object[k]->mesh[j]);
+					data->scene[i].object[j].mesh[k]);
 				if (to_draw(data, &ttrans) == 1)
 					clipping(data, ttrans);
 			}

@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/21 21:37:02 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,25 +14,31 @@
 
 static void     init_toptriangle(t_doom *data, t_triangle tmp)
 {
-    data->fdata.u1 = tmp.t[1].u - tmp.t[0].u;
-    data->fdata.v1 = tmp.t[1].v - tmp.t[0].v;
-    data->fdata.w1 = tmp.t[1].w - tmp.t[0].w;
     data->fdata.x1 = tmp.v[1].x - tmp.v[0].x;
-    data->fdata.y1 = tmp.v[1].y - tmp.v[0].y;
-    data->fdata.u2 = tmp.t[2].u - tmp.t[0].u;
-    data->fdata.v2 = tmp.t[2].v - tmp.t[0].v;
-    data->fdata.w2 = tmp.t[2].w - tmp.t[0].w;
     data->fdata.x2 = tmp.v[2].x - tmp.v[0].x;
+    data->fdata.y1 = tmp.v[1].y - tmp.v[0].y;
     data->fdata.y2 = tmp.v[2].y - tmp.v[0].y;
+    if (data->var.texture)
+    {
+        data->fdata.u1 = tmp.t[1].u - tmp.t[0].u;
+        data->fdata.v1 = tmp.t[1].v - tmp.t[0].v;
+        data->fdata.w1 = tmp.t[1].w - tmp.t[0].w;
+        data->fdata.u2 = tmp.t[2].u - tmp.t[0].u;
+        data->fdata.v2 = tmp.t[2].v - tmp.t[0].v;
+        data->fdata.w2 = tmp.t[2].w - tmp.t[0].w;
+    }
 }
 
 static void     init_bottomtriangle(t_doom *data, t_triangle tmp)
 {
-    data->fdata.u1 = tmp.t[2].u - tmp.t[1].u;
-    data->fdata.v1 = tmp.t[2].v - tmp.t[1].v;
-    data->fdata.w1 = tmp.t[2].w - tmp.t[1].w;
     data->fdata.x1 = tmp.v[2].x - tmp.v[1].x;
     data->fdata.y1 = tmp.v[2].y - tmp.v[1].y;
+    if (data->var.texture)
+    {
+        data->fdata.u1 = tmp.t[2].u - tmp.t[1].u;
+        data->fdata.v1 = tmp.t[2].v - tmp.t[1].v;
+        data->fdata.w1 = tmp.t[2].w - tmp.t[1].w;
+    }
 }
 
 static void     swap_vertex(t_triangle *tmp)

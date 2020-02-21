@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/21 21:38:18 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,17 +19,18 @@ static void     get_texcoor(t_doom *data, float t, int i, int j)
     float   v;
     float   w;
 
-	u = (1 - t) * data->fdata.su + t * data->fdata.eu;
-	v = (1 - t) * data->fdata.sv + t * data->fdata.ev;
-	w = (1 - t) * data->fdata.sw + t * data->fdata.ew;
     pos = j + i * W_WIDTH;
-    if (w > data->dbuffer[pos])
-	{
-        putpixel(data, j, i,
-            //data->var.color);
-            get_pixel(data, u / w, v / w));
+    if (data->var.texture)
+    {
+        u = (1 - t) * data->fdata.su + t * data->fdata.eu;
+	    v = (1 - t) * data->fdata.sv + t * data->fdata.ev;
+	    w = (1 - t) * data->fdata.sw + t * data->fdata.ew;
+        if (w > data->dbuffer[pos])
+            putpixel(data, j, i, get_pixel(data, u / w, v / w));
 	    data->dbuffer[pos] = w;
-    }    
+    }
+    else
+        putpixel(data, j ,i, data->var.color);
 }
 
 static void     filltriangle(t_doom *data, int i)
@@ -60,12 +61,15 @@ static void     init_step(t_doom *data)
 {
     data->fdata.dax = data->fdata.x1 / (float)abs(data->fdata.y1);
     data->fdata.dbx = data->fdata.x2 / (float)abs(data->fdata.y2);
-    data->fdata.du1 = data->fdata.u1 / (float)abs(data->fdata.y1);
-    data->fdata.dv1 = data->fdata.v1 / (float)abs(data->fdata.y1);
-    data->fdata.dw1 = data->fdata.w1 / (float)abs(data->fdata.y1);
-    data->fdata.du2 = data->fdata.u2 / (float)abs(data->fdata.y2);
-    data->fdata.dv2 = data->fdata.v2 / (float)abs(data->fdata.y2);
-    data->fdata.dw2 = data->fdata.w2 / (float)abs(data->fdata.y2);
+    if (data->var.texture)
+    {
+        data->fdata.du1 = data->fdata.u1 / (float)abs(data->fdata.y1);
+        data->fdata.dv1 = data->fdata.v1 / (float)abs(data->fdata.y1);
+        data->fdata.dw1 = data->fdata.w1 / (float)abs(data->fdata.y1);
+        data->fdata.du2 = data->fdata.u2 / (float)abs(data->fdata.y2);
+        data->fdata.dv2 = data->fdata.v2 / (float)abs(data->fdata.y2);
+        data->fdata.dw2 = data->fdata.w2 / (float)abs(data->fdata.y2);
+    }
 }
 
 void            fill_bottom(t_doom *data, t_triangle tmp)
@@ -80,12 +84,15 @@ void            fill_bottom(t_doom *data, t_triangle tmp)
     {
         data->fdata.ax = tmp.v[1].x + (i + 0.5f - tmp.v[1].y) * data->fdata.dax;
         data->fdata.bx = tmp.v[0].x + (i + 0.5f - tmp.v[0].y) * data->fdata.dbx;
-        data->fdata.su = tmp.t[1].u + (i + 0.5f - tmp.v[1].y) * data->fdata.du1;
-        data->fdata.sv = tmp.t[1].v + (i + 0.5f - tmp.v[1].y) * data->fdata.dv1;
-        data->fdata.sw = tmp.t[1].w + (i + 0.5f - tmp.v[1].y) * data->fdata.dw1;
-        data->fdata.eu = tmp.t[0].u + (i + 0.5f - tmp.v[0].y) * data->fdata.du2;
-        data->fdata.ev = tmp.t[0].v + (i + 0.5f - tmp.v[0].y) * data->fdata.dv2;
-        data->fdata.ew = tmp.t[0].w + (i + 0.5f - tmp.v[0].y) * data->fdata.dw2;
+        if (data->var.texture)
+        {
+            data->fdata.su = tmp.t[1].u + (i + 0.5f - tmp.v[1].y) * data->fdata.du1;
+            data->fdata.sv = tmp.t[1].v + (i + 0.5f - tmp.v[1].y) * data->fdata.dv1;
+            data->fdata.sw = tmp.t[1].w + (i + 0.5f - tmp.v[1].y) * data->fdata.dw1;
+            data->fdata.eu = tmp.t[0].u + (i + 0.5f - tmp.v[0].y) * data->fdata.du2;
+            data->fdata.ev = tmp.t[0].v + (i + 0.5f - tmp.v[0].y) * data->fdata.dv2;
+            data->fdata.ew = tmp.t[0].w + (i + 0.5f - tmp.v[0].y) * data->fdata.dw2;
+        }
         filltriangle(data, i);
     }
 }
@@ -102,12 +109,15 @@ void            fill_top(t_doom *data, t_triangle tmp)
     {
         data->fdata.ax = tmp.v[0].x + (i + 0.5f - tmp.v[0].y) * data->fdata.dax;
         data->fdata.bx = tmp.v[0].x + (i + 0.5f - tmp.v[0].y) * data->fdata.dbx;
-        data->fdata.su = tmp.t[0].u + (i + 0.5f - tmp.v[0].y) * data->fdata.du1;
-        data->fdata.sv = tmp.t[0].v + (i + 0.5f - tmp.v[0].y) * data->fdata.dv1;
-        data->fdata.sw = tmp.t[0].w + (i + 0.5f - tmp.v[0].y) * data->fdata.dw1;
-        data->fdata.eu = tmp.t[0].u + (i + 0.5f - tmp.v[0].y) * data->fdata.du2;
-        data->fdata.ev = tmp.t[0].v + (i + 0.5f - tmp.v[0].y) * data->fdata.dv2;
-        data->fdata.ew = tmp.t[0].w + (i + 0.5f - tmp.v[0].y) * data->fdata.dw2;
+        if (data->var.texture)
+        {
+            data->fdata.su = tmp.t[0].u + (i + 0.5f - tmp.v[0].y) * data->fdata.du1;
+            data->fdata.sv = tmp.t[0].v + (i + 0.5f - tmp.v[0].y) * data->fdata.dv1;
+            data->fdata.sw = tmp.t[0].w + (i + 0.5f - tmp.v[0].y) * data->fdata.dw1;
+            data->fdata.eu = tmp.t[0].u + (i + 0.5f - tmp.v[0].y) * data->fdata.du2;
+            data->fdata.ev = tmp.t[0].v + (i + 0.5f - tmp.v[0].y) * data->fdata.dv2;
+            data->fdata.ew = tmp.t[0].w + (i + 0.5f - tmp.v[0].y) * data->fdata.dw2;
+        }
         filltriangle(data, i);
     }
 }

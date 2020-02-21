@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/21 21:32:10 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -74,9 +74,12 @@ static void		triangletransform(t_doom *data, t_triangle *triangle)
 	i = -1;
 	while (++i < 3)
 	{
-		triangle->t[i].u /= triangle->v[i].w;
-		triangle->t[i].v /= triangle->v[i].w;
-		triangle->t[i].w = 1 / triangle->v[i].w;
+        if (data->var.texture)
+        {
+		    triangle->t[i].u /= triangle->v[i].w;
+    		triangle->t[i].v /= triangle->v[i].w;
+	    	triangle->t[i].w = 1 / triangle->v[i].w;
+        }
         triangle->v[i] = vecdiv(triangle->v[i], triangle->v[i].w / 2);
         triangle->v[i].x *= -1;
         triangle->v[i].y *= -1;

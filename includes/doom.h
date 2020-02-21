@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/12 16:15:09 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/21 17:39:10 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,6 +70,7 @@ typedef struct	s_object
 {
 	int			i;
 	int			size;
+	int			texture;
 	char		*name;
 	t_triangle	*mesh;
 }				t_obj;
@@ -78,7 +79,7 @@ typedef struct	s_scene
 {
 	int			iobj;
 	SDL_Surface	*texture;
-	t_obj		**object;
+	t_obj		*object;
 }				t_scene;
 
 typedef struct	s_matrix
@@ -174,6 +175,7 @@ typedef struct	s_parser
 	int				s;
 	int				size;
 	int				ti;
+	int				tcount;
 	int				vcount;
 	int				vtcount;
 	int				vi;
@@ -203,10 +205,6 @@ typedef struct	s_mainenv
 	SDL_Window		*pwindow;
 }				t_doom;
 
-void            parse_error(t_doom *data);
-void            skip_line(char *str, int *start);
-void            handle_vertex(t_doom *data, t_scene *scene, int *start);
-
 void			clean_exit(t_doom *data, char *str, int token);
 float			ft_interpol(float nb1, float nb2, float alpha);
 float			rsqrt(float number);
@@ -222,7 +220,12 @@ void			events(t_doom *data);
 void            filltriangletext(t_doom *data, t_triangle triangle);
 void            fill_top(t_doom *data, t_triangle triangle);
 void            fill_bottom(t_doom *data, t_triangle triangle);
+
 void            get_object(t_doom *data, t_scene *scene, char *file);
+void            parse_error(t_doom *data);
+void            skip_line(char *str, int *start);
+void            handle_vertex(t_doom *data, t_scene *scene, int *start);
+void			stock_vertex(t_doom *data, t_scene *scene, int *i);
 
 SDL_Surface		*new_surface(int w, int h);
 uint32_t		get_pixel(t_doom *data, float samplex, float sampley);

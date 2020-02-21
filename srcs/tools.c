@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/12 16:39:07 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/21 18:56:50 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,9 +41,15 @@ static void		free_usages(t_doom *data)
 	{
 		if (data->tab && data->tab[i])
 			ft_memdel((void **)&data->tab[i]);
-		j = data->scene[i].iobj;
-		while (j--)
-			ft_memdel((void **)&data->scene[i].object[j]);
+		j = -1;
+		while (++j < data->scene[i].iobj)
+			if (data->scene[i].object)
+			{
+				ft_memdel((void **)&data->scene[i].object[j].mesh);
+				ft_memdel((void **)&data->scene[i].object[j].name);	
+			}
+		if (data->scene[i].object)
+			ft_memdel((void **)&data->scene[i].object);
 	}
 }
 

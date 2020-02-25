@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/21 17:39:10 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/25 19:23:01 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@
 # define W_WIDTH	1280
 # define W_HEIGHT	720
 # define W_LEN		W_WIDTH * W_HEIGHT
+# define PNB_CHAR	10
 
 # define FPS		120
 
@@ -59,11 +60,31 @@ typedef struct	s_vectorlist
 	t_vec3d		up;
 }				t_vector;
 
+typedef struct	s_mtl
+{
+	char		*name;
+	int			i;
+	int			ka;
+	int			kd;
+	int			ks;
+	int			d;
+	int			tr;
+	int			ns;
+	int			illum;
+	int			map_ka;
+	int			map_kd;
+	int			map_ks;
+	char		*map_name;
+}				t_mtl;
+
 typedef struct	s_triangle
 {
 	t_vec3d		v[3];
 	t_vec2d		t[3];
+	t_mtl		ressources;
 	int			color;
+	int			tex;
+	SDL_Surface	*texture;
 }				t_triangle;
 
 typedef struct	s_object
@@ -173,14 +194,18 @@ typedef struct	s_parser
 {
 	int				io;
 	int				s;
-	int				size;
 	int				ti;
-	int				tcount;
 	int				vcount;
 	int				vtcount;
 	int				vi;
 	int				vti;
-	char			c[8];
+	int				nb;
+	int				tnb;
+	int				v[3];
+	int				t[3];
+	char			c[PNB_CHAR];
+	int				mtl_max;
+	t_mtl			*mtl_ressources;
 	t_vec2d			*texture;
 	t_vec3d			*vertex;
 }				t_pdata;
@@ -222,10 +247,13 @@ void            fill_top(t_doom *data, t_triangle triangle);
 void            fill_bottom(t_doom *data, t_triangle triangle);
 
 void            get_object(t_doom *data, t_scene *scene, char *file);
-void            parse_error(t_doom *data);
+void            parser_error(t_doom *data);
+int             parser_goodchar(t_doom *data, char c);
+void            parser_mtl(t_doom *data);
+void            parser_mtlassign(t_doom *data, t_scene *scene, int *i);
 void            skip_line(char *str, int *start);
-void            handle_vertex(t_doom *data, t_scene *scene, int *start);
-void			stock_vertex(t_doom *data, t_scene *scene, int *i);
+void            parser_handlevertex(t_doom *data, t_scene *scene, int *start);
+void			parser_stockvertex(t_doom *data, t_scene *scene, int *i);
 
 SDL_Surface		*new_surface(int w, int h);
 uint32_t		get_pixel(t_doom *data, float samplex, float sampley);

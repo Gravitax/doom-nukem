@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/21 18:56:50 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/25 19:23:17 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,19 +37,29 @@ static void		free_usages(t_doom *data)
 	int	j;
 
 	i = -1;
+	if (data->pdata.mtl_ressources)
+	{
+		while (++i < data->pdata.mtl_max)
+		{
+			ft_strdel(&data->pdata.mtl_ressources[i].name);
+			ft_strdel(&data->pdata.mtl_ressources[i].map_name);
+		}
+		ft_memdel((void **)&data->pdata.mtl_ressources);
+	}
+	i = -1;
 	while (++i < data->var.ac - 1)
 	{
-		if (data->tab && data->tab[i])
-			ft_memdel((void **)&data->tab[i]);
 		j = -1;
-		while (++j < data->scene[i].iobj)
-			if (data->scene[i].object)
+		if (data->scene[i].object)
+		{
+			while (++j < data->scene[i].iobj)
 			{
 				ft_memdel((void **)&data->scene[i].object[j].mesh);
 				ft_memdel((void **)&data->scene[i].object[j].name);	
 			}
-		if (data->scene[i].object)
 			ft_memdel((void **)&data->scene[i].object);
+		}
+		ft_memdel((void **)&data->tab[i]);
 	}
 }
 

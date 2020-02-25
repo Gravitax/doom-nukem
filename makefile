@@ -6,7 +6,7 @@
 #    By: maboye <maboye@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/31 12:01:33 by maboye            #+#    #+#              #
-#    Updated: 2020/02/21 17:32:07 by maboye           ###   ########.fr        #
+#    Updated: 2020/02/25 18:55:53 by maboye           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -41,9 +41,11 @@ SRC		=	cliptriangle.c \
 			filltriangletext.c \
 			filltriangletext2.c \
 			matrix.c \
+			parser_faces.c \
+			parser_mtl.c \
+			parser_mtlassign.c \
+			parser_vertex.c \
 			parser.c \
-			parser2.c \
-			parser3.c \
 			parsertools.c \
 			rasterisation.c \
 			tools.c \

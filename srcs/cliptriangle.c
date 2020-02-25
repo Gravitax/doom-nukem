@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/25 19:18:49 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,14 +44,7 @@ int             cliptriangle(t_doom *data)
     data->cdata.out[1] = data->cdata.in;
     i = -1;
     while (++i < 3)
-    {
-        if (data->cdata.in.v[i].z > 16)
-        {
-            //printf("z: %f\n", data->cdata.in.v[i].z);
-            return (0);
-        }
         test_vertex(data, data->cdata.in.v[i], data->cdata.in.t[i]);
-    }
     if (data->cdata.inside == 0)
         return (0);
     else if (data->cdata.inside == 3)

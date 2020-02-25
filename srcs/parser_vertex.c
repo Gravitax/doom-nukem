@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   parser2.c                                          :+:      :+:    :+:   */
+/*   parser_vertex.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/21 21:17:28 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/25 17:38:05 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,12 +17,9 @@ static void     get_size(t_doom *data, int *start)
     while (data->str && data->str[*start])
     {   
         if (data->str[*start] == '#' || data->str[*start] == 'o'
-        || data->str[*start] == 's' || data->str[*start] == 'f')
-        {
-            if (data->str[*start] == 'f')
-                ++data->pdata.tcount;
+        || data->str[*start] == 's' || data->str[*start] == 'f'
+        || data->str[*start] == 'm' || data->str[*start] == 'u')
             skip_line(data->str, start);
-        }
         else if (data->str[*start] == 'v')
         {
             if (data->str[*start + 1] == 't')
@@ -33,27 +30,26 @@ static void     get_size(t_doom *data, int *start)
         }
         else if (isspace(data->str[*start]))
             ++(*start);
-        else
-            parse_error(data);
+        else if (parser_goodchar(data, data->str[*start]) == 0)
+            parser_error(data);
     }
 }
 
 static void     init_ptrmallocsize(t_doom *data, int start, t_scene *scene)
 {
     get_size(data, &start);
-    if (!(scene->object[data->pdata.io].mesh = (t_triangle *)ft_memalloc(
-            sizeof(t_triangle) * data->pdata.tcount)))
-        parse_error(data);
+    if (data->pdata.vcount == 0)
+        parser_error(data);
     if (!(data->pdata.vertex = (t_vec3d *)ft_memalloc(sizeof(t_vec3d)
             * data->pdata.vcount)))
-        parse_error(data);
+        parser_error(data);
     if (data->pdata.vtcount == 0)
         return ;
     else
         data->var.texture = 1;
     if (!(data->pdata.texture = (t_vec2d *)ft_memalloc(sizeof(t_vec2d)
             * data->pdata.vtcount)))
-        parse_error(data);
+        parser_error(data);
 }
 
 static void     assign_vertex(t_doom *data, float *v, int vnb)
@@ -73,7 +69,7 @@ static void     get_vertex(t_doom *data, int *start, int vnb)
 
     nb = 0;
     ++(*start);
-    while (nb < vnb && data->str[*start] && data->str[*start] != '\n')
+    while (data->str[*start] && data->str[*start] != '\n')
     {
         while (isblank(data->str[*start]))
             ++(*start);
@@ -86,15 +82,15 @@ static void     get_vertex(t_doom *data, int *start, int vnb)
                 ++(*start);
         }
         else
-            parse_error(data);
+            parser_error(data);
     }
-    (nb == vnb) ? assign_vertex(data, v, vnb) : parse_error(data);
+    (nb == vnb) ? assign_vertex(data, v, vnb) : parser_error(data);
 }
 
-void            handle_vertex(t_doom *data, t_scene *scene, int *start)
+void            parser_handlevertex(t_doom *data, t_scene *scene, int *start)
 {
-    if (data->pdata.s == 1)
-        parse_error(data);
+    if (data->pdata.s == 1 || scene->object[data->pdata.io].name == NULL)
+        parser_error(data);
     if (data->pdata.vcount == 0)
         init_ptrmallocsize(data, *start, scene);
     if (data->str[*start + 1] == 't')

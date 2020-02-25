@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/21 16:40:08 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/25 18:37:35 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,6 +64,7 @@ static void		init_data(t_doom *data)
 	int		i;
 
 	i = -1;
+	parser_mtl(data);
 	while (++i  < data->var.ac - 1)
 	{
 		get_object(data, &data->scene[i], data->tab[i]);

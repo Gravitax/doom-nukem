@@ -6,7 +6,7 @@
 #    By: maboye <maboye@student.42.fr>              +#+  +:+       +#+         #
 #                                                 +#+#+#+#+#+   +#+            #
 #    Created: 2019/07/31 12:01:33 by maboye            #+#    #+#              #
-#    Updated: 2020/02/25 18:55:53 by maboye           ###   ########.fr        #
+#    Updated: 2020/02/26 18:12:21 by maboye           ###   ########.fr        #
 #                                                                              #
 # **************************************************************************** #
 
@@ -40,6 +40,7 @@ SRC		=	cliptriangle.c \
 			events.c \
 			filltriangletext.c \
 			filltriangletext2.c \
+			map_editor.c \
 			matrix.c \
 			parser_faces.c \
 			parser_mtl.c \

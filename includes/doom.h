@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/25 19:23:01 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/26 18:19:27 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,6 +15,7 @@
 
 # include <stdio.h>
 # include <stdlib.h>
+# include <dirent.h>
 
 # include <SDL.h>
 
@@ -230,6 +231,7 @@ typedef struct	s_mainenv
 	SDL_Window		*pwindow;
 }				t_doom;
 
+void		    map_editor(t_doom *data);
 void			clean_exit(t_doom *data, char *str, int token);
 float			ft_interpol(float nb1, float nb2, float alpha);
 float			rsqrt(float number);

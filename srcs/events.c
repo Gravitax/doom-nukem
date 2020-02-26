@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/08/28 17:52:38 by maboye            #+#    #+#             */
-/*   Updated: 2020/02/12 15:51:04 by maboye           ###   ########.fr       */
+/*   Updated: 2020/02/26 18:12:29 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -81,6 +81,7 @@ void			events(t_doom *data)
 			world_rotation(data);
 			camera(data);
 			camera_rotation(data);
+			map_editor(data);
 		}
 	}
 }

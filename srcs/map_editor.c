@@ -42,38 +42,78 @@ static void		transform_meshmul(t_obj *object, float x, float y, float z)
 
 static void		transform_meshrot(t_obj *object, float x, float y, float z)
 {
+	int		i;
 	t_mat	rotmat;
+	t_mat	tmp;
 
-	rotxmatrix(&rotmat, );	
+	x = 1;
+	y = 1;
+	z = 1;
+	rotxmatrix(&rotmat, 0);
+	while (++i < object->size)
+	{
+		for (int v = 0; v < 3; v++)
+			object->mesh[i].v[v] = mat_mulvector(rotmat, object->mesh[i].v[v]);
+	}
+	rotxmatrix(&rotmat, x);
+	rotymatrix(&tmp, y);
+	rotmat = mat_mulmatrix(rotmat, tmp);
+	rotmat = mat_mulmatrix(rotmat, tmp);
+	i = -1;
+}
+
+static void		x_event(t_doom *data, t_obj *object, float dist)
+{
+	puts("X");
+	if (data->editor.key[S] == 1)
+		transform_meshmul(object, dist, 1, 1);
+	else if (data->editor.key[R] == 1)
+		transform_meshrot(object, dist, 1, 1);
+	else
+		transform_meshadd(object, dist - 1, 0, 0);
+}
+
+static void		y_event(t_doom *data, t_obj *object, float dist)
+{
+	puts("Y");
+	if (data->editor.key[S] == 1)
+		transform_meshmul(object, 1, dist, 1);
+	else if (data->editor.key[R] == 1)
+		transform_meshrot(object, 1, dist, 1);
+	else
+		transform_meshadd(object, 0, dist - 1, 0);
+}
+
+static void		z_event(t_doom *data, t_obj *object, float dist)
+{
+	puts("Zzzz");
+	if (data->editor.key[S] == 1)
+		transform_meshmul(object, 1, 1, dist);
+	else if (data->editor.key[R] == 1)
+		transform_meshrot(object, 1, 1, dist);
+	else
+		transform_meshadd(object, 0, 0, dist - 1);
 }
 
 static void		object_event(t_doom *data, t_obj *object)
 {
-	float		x;
-	float		y;
-	float		z;
 	float		dist;
 
-	dist = 0;
-	x = 1;
-	y = 1;
-	z = 1;
 	if (data->editor.key[DOWN])
-		dist = -0.1f;
+		dist = 0.9f;
 	else if (data->editor.key[UP])
-		dist = 0.1f;
-	if (data->editor.key[X])
-		x += dist;
-	else if (data->editor.key[Y])
-		y += dist;
-	else if (data->editor.key[Z])
-		z += dist;
-	if (data->editor.key[S] == 1)
-		transform_meshmul(object, x, y, z);
-	else if (data->editor.key[R] == 1)
-		transform_meshrot(object, x, y, z);
+		dist = 1.1f;
 	else
-		transform_meshadd(object, x - 1, y - 1, z - 1);
+		dist = 0;
+	if (dist)
+	{
+		if (data->editor.key[X])
+			x_event(data, object, dist);
+		else if (data->editor.key[Y])
+			y_event(data, object, dist);
+		else if (data->editor.key[Z])
+			z_event(data, object, dist);
+	}
 }
 
 static void		detect_key(t_doom *data)
@@ -130,13 +170,11 @@ void		    map_editor(t_doom *data)
 {
 	if (data->event.key.keysym.sym == SDLK_p)
 	{
+		ft_memset(data->editor.key, 0, sizeof(int) * KNB);
 		while (1)
 		{
             if (events_map_editor(data) == 0)
-			{
-				ft_memset(data->editor.key, 0, sizeof(int) * KNB);
                 return ;
-			}
 			display_mesh(data);
 			display_renderer(data);
 		}

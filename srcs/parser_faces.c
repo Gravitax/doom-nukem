@@ -51,8 +51,7 @@ static void     init_mesh(t_doom *data, t_scene *scene, int i)
         skip_line(data->str, &i);
     }
     scene->object[data->pdata.io].size = f;
-    f = sizeof(t_triangle) * f;
-    if (!(scene->object[data->pdata.io].mesh = (t_triangle *)malloc(f)))
+    if (!(scene->object[data->pdata.io].mesh = (t_triangle *)ft_memalloc(sizeof(t_triangle) * f)))
         parser_error(data);
 }
 
@@ -60,21 +59,23 @@ static void     stock_triangle(t_doom *data, t_scene *scene)
 {
     if (data->var.texture)
     {
-        scene->object[data->pdata.io].mesh[data->pdata.ti++] = (t_triangle){
+        scene->object[data->pdata.io].mesh[data->pdata.ti] = (t_triangle){
             data->pdata.vertex[data->pdata.v[0] - 1],
             data->pdata.vertex[data->pdata.v[1] - 1],
             data->pdata.vertex[data->pdata.v[2] - 1],
             data->pdata.texture[data->pdata.t[0] - 1],
             data->pdata.texture[data->pdata.t[1] - 1],
-            data->pdata.texture[data->pdata.t[2] - 1], 0 };
+            data->pdata.texture[data->pdata.t[2] - 1], 0,
+            data->pdata.ti++ };
     }
     else
     {
-        scene->object[data->pdata.io].mesh[data->pdata.ti++] = (t_triangle){
+        scene->object[data->pdata.io].mesh[data->pdata.ti] = (t_triangle){
             data->pdata.vertex[data->pdata.v[0] - 1],
             data->pdata.vertex[data->pdata.v[1] - 1],
-            data->pdata.vertex[data->pdata.v[2] - 1], 0 };        
-    }    
+            data->pdata.vertex[data->pdata.v[2] - 1], 0,
+            data->pdata.ti++ };
+    }
 }
 
 static void     handle_vtex(t_doom *data, int *i, int *tpossible)

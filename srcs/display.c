@@ -12,17 +12,6 @@
 
 #include "../includes/doom.h"
 
-static t_triangle	mmvtriangle(t_mat matrix, t_triangle triangle)
-{
-	t_triangle	tresult;
-
-	tresult = triangle;
-	tresult.v[0] = mat_mulvector(matrix, triangle.v[0]);
-	tresult.v[1] = mat_mulvector(matrix, triangle.v[1]);
-	tresult.v[2] = mat_mulvector(matrix, triangle.v[2]);
-	return (tresult);
-}
-
 static void			clipping(t_doom *data, t_triangle ttrans)
 {
 	int			i;
@@ -37,7 +26,7 @@ static void			clipping(t_doom *data, t_triangle ttrans)
 		rasterisation(data, mmvtriangle(data->matrix.proj, data->cdata.out[i]));
 }
 
-static int			to_draw(t_doom *data, t_triangle *triangle)
+static int			to_draw(t_doom *data, t_triangle *triangle, int i, int j)
 {
 	int		nb;
 	float	dp;
@@ -52,11 +41,14 @@ static int			to_draw(t_doom *data, t_triangle *triangle)
 	nb = 255 * dp;
 	if (nb < 0)
 		nb = 0;
-	triangle->color = (nb | nb << 8 | nb << 16 | 255 << 24);
-	return (vecdotproduct(n, camray) < 0);
+	if (data->var.is == i && data->var.io == j)
+		triangle->color = 0xff00ffff;
+	else
+		triangle->color = (nb | nb << 8 | nb << 16 | 255 << 24);
+	return (vecdotproduct(n, vecnormalise(camray)) < 0);
 }
 
-static void			display_mesh(t_doom *data)
+void				display_mesh(t_doom *data)
 {
 	int			i;
 	int			j;
@@ -66,18 +58,24 @@ static void			display_mesh(t_doom *data)
 	i = -1;
 	while (++i < data->var.ac - 1)
 	{
-		j = data->scene[i].iobj;
 		data->texture = data->scene[i].texture;
-		while (j--)
+		j = -1;
+		while (++j < data->scene[i].iobj)
 		{
-			k = data->scene[i].object[j].size + 1;
-			while (k--)
+			data->var.it = 0;
+			k = -1;
+			while (++k < data->scene[i].object[j].size)
 			{
 				data->var.texture = data->scene[i].object[j].texture;
 				ttrans = mmvtriangle(data->matrix.world,
 					data->scene[i].object[j].mesh[k]);
-				if (to_draw(data, &ttrans) == 1)
+				if (to_draw(data, &ttrans, i, j) == 1)
 					clipping(data, ttrans);
+				if (data->var.it == 1)
+				{
+					data->var.is = i;
+					data->var.io = j;
+				}
 			}
 		}
 	}
@@ -103,7 +101,7 @@ static void			load_world(t_doom *data)
 	data->vector.up = mat_mulvector(camrot, data->vector.up);
 }
 
-static void			display_renderer(t_doom *data)
+void				display_renderer(t_doom *data)
 {
 	int				i;
 	unsigned int	*pixels;

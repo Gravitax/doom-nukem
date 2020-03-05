@@ -36,10 +36,10 @@ static void		world_rotation(t_doom *data)
 
 static void		camera_rotation(t_doom *data)
 {
-	if (data->event.key.keysym.sym == SDLK_q
+	if (data->event.key.keysym.sym == SDLK_a
 	|| data->event.key.keysym.sym == SDLK_e)
 	{
-		data->var.yaw += (data->event.key.keysym.sym == SDLK_q ? 0.02f : -0.02f);
+		data->var.yaw += (data->event.key.keysym.sym == SDLK_a ? 0.02f : -0.02f);
 		rotymatrix(&data->matrix.camroty, data->var.yaw);
 	}
 	else if (data->event.key.keysym.sym == SDLK_r
@@ -58,11 +58,11 @@ static void		camera(t_doom *data)
 		data->vector.camera = vecsub(data->vector.camera, vecmul(data->vector.up, 0.1f));
 	else if (data->event.key.keysym.sym == SDLK_DOWN)
 		data->vector.camera = vecadd(data->vector.camera, vecmul(data->vector.up, 0.1f));
-	else if (data->event.key.keysym.sym == SDLK_a)
+	else if (data->event.key.keysym.sym == SDLK_q)
 		data->vector.camera = vecsub(data->vector.camera, vecmul(data->vector.right, 0.1f));
 	else if (data->event.key.keysym.sym == SDLK_d)
 		data->vector.camera = vecadd(data->vector.camera, vecmul(data->vector.right, 0.1f));
-	else if (data->event.key.keysym.sym == SDLK_w)
+	else if (data->event.key.keysym.sym == SDLK_z)
 		data->vector.camera = vecadd(data->vector.camera, data->vector.forward);
 	else if (data->event.key.keysym.sym == SDLK_s)
 		data->vector.camera = vecsub(data->vector.camera, data->vector.forward);
@@ -75,7 +75,7 @@ void			events(t_doom *data)
 		if ((data->event.key.keysym.sym == SDLK_ESCAPE
 			&& data->event.type == SDL_KEYDOWN)
 		|| data->event.type == SDL_QUIT)
-			clean_exit(data, "cube3d: EXIT_SUCCES", 1);
+			clean_exit(data, "doom-nukem: EXIT_SUCCES", 1);
 		if (data->event.type == SDL_KEYDOWN)
 		{
 			world_rotation(data);

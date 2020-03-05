@@ -12,6 +12,17 @@
 
 #include "../includes/doom.h"
 
+t_triangle		mmvtriangle(t_mat matrix, t_triangle triangle)
+{
+	t_triangle	tresult;
+
+	tresult = triangle;
+	tresult.v[0] = mat_mulvector(matrix, triangle.v[0]);
+	tresult.v[1] = mat_mulvector(matrix, triangle.v[1]);
+	tresult.v[2] = mat_mulvector(matrix, triangle.v[2]);
+	return (tresult);
+}
+
 void			pmatrix(t_doom *data)
 {
 	float	ratio;

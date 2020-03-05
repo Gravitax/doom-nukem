@@ -39,8 +39,8 @@ static int		get_fps(t_doom *data)
 
 static void		init_matrix(t_doom *data)
 {
-	data->var.xfactor = 0.5f * (float)W_WIDTH;
-	data->var.yfactor = 0.5f * (float)W_HEIGHT;
+	data->var.xfactor = W_WIDTH / 2;
+	data->var.yfactor = W_HEIGHT / 2;
 	data->var.xtheta = 1;
 	data->var.ytheta = 1;
 	data->var.ztheta = 1;
@@ -65,7 +65,7 @@ static void		init_data(t_doom *data)
 
 	i = -1;
 	parser_mtl(data);
-	while (++i  < data->var.ac - 1)
+	while (++i < data->var.ac - 1)
 	{
 		get_object(data, &data->scene[i], data->tab[i]);
 		if (!(data->scene[i].texture = SDL_LoadBMP("img/doom.bmp")))

@@ -76,6 +76,7 @@ static void     test_meshstorage(t_doom *data, t_scene *scene)
                     scene->object[o].mesh[i].v[j].y,
                     scene->object[o].mesh[i].v[j].z,
                     scene->object[o].mesh[i].v[j].w);
+                printf("i: %d\n", scene->object[o].mesh[i].i);
                 printf("u: %f, v: %f, w: %f\n",
                     scene->object[o].mesh[i].t[j].u,
                     scene->object[o].mesh[i].t[j].v,
@@ -141,7 +142,7 @@ void            get_object(t_doom *data, t_scene *scene, char *file)
 {
     char    *path;
 
-    path = ft_strjoin("/Users/maboye/sgoinfre/doom-nukem/object/", file);
+    path = ft_strjoin("/home/maboye/42/doom-nukem/object/", file);
     path = ft_strfjoin(path, ".obj", 1);
     if (!(data->str = ft_readfile(path)))
     {

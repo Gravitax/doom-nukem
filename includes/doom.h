@@ -17,7 +17,7 @@
 # include <stdlib.h>
 # include <dirent.h>
 
-# include <SDL.h>
+# include <SDL2/SDL.h>
 
 # include "../libft/libft.h"
 
@@ -27,6 +27,19 @@
 # define PNB_CHAR	10
 
 # define FPS		120
+
+enum			e_key
+{
+	DOWN,
+	UP,
+	R,
+	S,
+	X,
+	Y,
+	Z
+};
+
+# define KNB		Z + 1
 
 typedef union	u_rsqrt
 {
@@ -82,9 +95,10 @@ typedef struct	s_triangle
 {
 	t_vec3d		v[3];
 	t_vec2d		t[3];
-	t_mtl		ressources;
 	int			color;
+	int			i;
 	int			tex;
+	t_mtl		ressources;
 	SDL_Surface	*texture;
 }				t_triangle;
 
@@ -151,6 +165,8 @@ typedef struct	s_filltriangle
 	float		eu;
 	float		ev;
 	float		ew;
+	float		simples[6];
+	float		steps[6];
 }				t_fdata;
 
 typedef struct	s_clipptriangle
@@ -169,6 +185,9 @@ typedef struct	s_clipptriangle
 
 typedef struct	s_variables
 {
+	int				io;
+	int				is;
+	int				it;
 	int				ac;
 	int				color;
 	int				fps;
@@ -211,12 +230,19 @@ typedef struct	s_parser
 	t_vec3d			*vertex;
 }				t_pdata;
 
+typedef struct	s_mapeditor
+{
+	int			key[6];
+}				t_editor;
+
+
 typedef struct	s_mainenv
 {
 	float			dbuffer[W_LEN + 1];
 	char			*str;
 	char			**tab;
 	t_cdata			cdata;
+	t_editor		editor;
 	t_fdata			fdata;
 	t_matrix		matrix;
 	t_pdata			pdata;
@@ -231,6 +257,8 @@ typedef struct	s_mainenv
 	SDL_Window		*pwindow;
 }				t_doom;
 
+void			display_mesh(t_doom *data);
+void			display_renderer(t_doom *data);
 void		    map_editor(t_doom *data);
 void			clean_exit(t_doom *data, char *str, int token);
 float			ft_interpol(float nb1, float nb2, float alpha);
@@ -262,6 +290,7 @@ uint32_t		get_pixel(t_doom *data, float samplex, float sampley);
 void			putpixel(t_doom *data, int x, int y, int color);
 void            swap_floats(float *a, float *b);
 
+t_triangle		mmvtriangle(t_mat matrix, t_triangle triangle);
 void			multiply_matrix(t_vec3d i, t_vec3d *o, t_mat m);
 void			pmatrix(t_doom *data);
 void			rotxmatrix(t_mat *matrix, float angle);

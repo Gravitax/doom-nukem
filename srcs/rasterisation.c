@@ -80,7 +80,7 @@ static void		triangletransform(t_doom *data, t_triangle *triangle)
     		triangle->t[i].v /= triangle->v[i].w;
 	    	triangle->t[i].w = 1 / triangle->v[i].w;
         }
-        triangle->v[i] = vecdiv(triangle->v[i], triangle->v[i].w / 2);
+        triangle->v[i] = vecdiv(triangle->v[i], triangle->v[i].z / 2);
         triangle->v[i].x *= -1;
         triangle->v[i].y *= -1;
         triangle->v[i] = vecadd(triangle->v[i], data->vector.offset);

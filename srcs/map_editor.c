@@ -14,17 +14,22 @@
 
 static void		transform_meshadd(t_obj *object, float x, float y, float z)
 {
-	int	i;
+	int		i;
+	t_mat	transmat;
 
+	transmatrix(&transmat, x, y, z / 2);
 	i = -1;
 	while (++i < object->size)
-		for (int v = 0; v < 3; v++)
-		{
-			object->mesh[i].v[v].x += x;
-			object->mesh[i].v[v].y += y;
-			object->mesh[i].v[v].z += z;
-		}
-}
+	{
+		//for (int v = 0; v < 3; v++)
+		//{
+		//	object->mesh[i].v[v].x += x;
+		//	object->mesh[i].v[v].y += y;
+		//	object->mesh[i].v[v].z += z;
+		//}
+		object->mesh[i] = mmvtriangle(transmat, object->mesh[i]);
+	}
+}	
 
 static void		transform_meshmul(t_obj *object, float x, float y, float z)
 {
@@ -42,24 +47,17 @@ static void		transform_meshmul(t_obj *object, float x, float y, float z)
 
 static void		transform_meshrot(t_obj *object, float x, float y, float z)
 {
-	int		i;
 	t_mat	rotmat;
 	t_mat	tmp;
 
-	x = 1;
-	y = 1;
-	z = 1;
-	rotxmatrix(&rotmat, 0);
-	while (++i < object->size)
-	{
-		for (int v = 0; v < 3; v++)
-			object->mesh[i].v[v] = mat_mulvector(rotmat, object->mesh[i].v[v]);
-	}
-	rotxmatrix(&rotmat, x);
+	rotzmatrix(&rotmat, z);
 	rotymatrix(&tmp, y);
 	rotmat = mat_mulmatrix(rotmat, tmp);
+	rotxmatrix(&tmp, x);
 	rotmat = mat_mulmatrix(rotmat, tmp);
-	i = -1;
+	int i = -1;
+	while (++i < object->size)
+		object->mesh[i] = mmvtriangle(rotmat, object->mesh[i]);
 }
 
 static void		x_event(t_doom *data, t_obj *object, float dist)
@@ -68,7 +66,7 @@ static void		x_event(t_doom *data, t_obj *object, float dist)
 	if (data->editor.key[S] == 1)
 		transform_meshmul(object, dist, 1, 1);
 	else if (data->editor.key[R] == 1)
-		transform_meshrot(object, dist, 1, 1);
+		transform_meshrot(object, dist - 1, 0, 0);
 	else
 		transform_meshadd(object, dist - 1, 0, 0);
 }
@@ -79,18 +77,20 @@ static void		y_event(t_doom *data, t_obj *object, float dist)
 	if (data->editor.key[S] == 1)
 		transform_meshmul(object, 1, dist, 1);
 	else if (data->editor.key[R] == 1)
-		transform_meshrot(object, 1, dist, 1);
+		transform_meshrot(object, 0, dist - 1, 0);
 	else
 		transform_meshadd(object, 0, dist - 1, 0);
 }
 
 static void		z_event(t_doom *data, t_obj *object, float dist)
 {
+	t_mat	zmat;
+
 	puts("Zzzz");
 	if (data->editor.key[S] == 1)
 		transform_meshmul(object, 1, 1, dist);
 	else if (data->editor.key[R] == 1)
-		transform_meshrot(object, 1, 1, dist);
+		transform_meshrot(object, 0, 0, dist - 1);
 	else
 		transform_meshadd(object, 0, 0, dist - 1);
 }

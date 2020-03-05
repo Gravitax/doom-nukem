@@ -55,7 +55,7 @@ static void		init_matrix(t_doom *data)
 	pmatrix(data);
 	rotxmatrix(&data->matrix.rotx, data->var.xtheta);
 	rotymatrix(&data->matrix.roty, data->var.ytheta);
-	rotzmatrix(&data->matrix.rotz, data->var.ztheta * 0.5f);
+	rotzmatrix(&data->matrix.rotz, data->var.ztheta);
 	transmatrix(&data->matrix.trans, 0, 0, 2);
 }
 

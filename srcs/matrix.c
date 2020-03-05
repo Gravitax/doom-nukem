@@ -14,12 +14,13 @@
 
 t_triangle		mmvtriangle(t_mat matrix, t_triangle triangle)
 {
+	int			i;
 	t_triangle	tresult;
 
 	tresult = triangle;
-	tresult.v[0] = mat_mulvector(matrix, triangle.v[0]);
-	tresult.v[1] = mat_mulvector(matrix, triangle.v[1]);
-	tresult.v[2] = mat_mulvector(matrix, triangle.v[2]);
+	i = -1;
+	while (++i < 3)
+		tresult.v[i] = mat_mulvector(matrix, triangle.v[i]);
 	return (tresult);
 }
 

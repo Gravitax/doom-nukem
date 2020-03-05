@@ -30,7 +30,7 @@ static void		world_rotation(t_doom *data)
 	|| data->event.key.keysym.sym == SDLK_n)
 	{
 		data->var.ztheta += (data->event.key.keysym.sym == SDLK_b ? 0.1f : -0.1f);
-		rotzmatrix(&data->matrix.rotz, data->var.ztheta * 0.5f);
+		rotzmatrix(&data->matrix.rotz, data->var.ztheta);
 	}
 }
 

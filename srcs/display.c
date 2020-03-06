@@ -29,7 +29,6 @@ static void			clipping(t_doom *data, t_triangle ttrans)
 static int			to_draw(t_doom *data, t_triangle *triangle, int i, int j)
 {
 	int		nb;
-	float	dp;
 	t_vec3d	camray;
 	t_vec3d	n;
 
@@ -37,8 +36,7 @@ static int			to_draw(t_doom *data, t_triangle *triangle, int i, int j)
 						vecsub(triangle->v[2], triangle->v[0]));
 	n = vecnormalise(n);
 	camray = vecsub(triangle->v[0], data->vector.camera);
-	dp = vecdotproduct(vecnormalise(data->vector.lightdir), n);
-	nb = 255 * dp;
+	nb = 255 * vecdotproduct(vecnormalise(data->vector.lightdir), n);
 	if (nb < 0)
 		nb = 0;
 	if (data->var.is == i && data->var.io == j)
@@ -48,12 +46,31 @@ static int			to_draw(t_doom *data, t_triangle *triangle, int i, int j)
 	return (vecdotproduct(n, vecnormalise(camray)) < 0);
 }
 
+static void			display_object(t_doom *data, t_obj object)
+{
+	int			j;
+	t_triangle	ttrans;
+
+	data->var.it = 0;
+	j = -1;
+	while (++j < object.size)
+	{
+		data->var.texture = object.texture;
+		ttrans = mmvtriangle(data->matrix.world, object.mesh[j]);
+		if (to_draw(data, &ttrans, object.si, object.i) == 1)
+			clipping(data, ttrans);
+		if (data->var.it == 1)
+		{
+			data->var.is = object.si;
+			data->var.io = object.i;
+		}
+	}
+}
+
 void				display_mesh(t_doom *data)
 {
 	int			i;
 	int			j;
-	int			k;
-	t_triangle	ttrans;
 
 	i = -1;
 	while (++i < data->var.ac - 1)
@@ -61,23 +78,7 @@ void				display_mesh(t_doom *data)
 		data->texture = data->scene[i].texture;
 		j = -1;
 		while (++j < data->scene[i].iobj)
-		{
-			data->var.it = 0;
-			k = -1;
-			while (++k < data->scene[i].object[j].size)
-			{
-				data->var.texture = data->scene[i].object[j].texture;
-				ttrans = mmvtriangle(data->matrix.world,
-					data->scene[i].object[j].mesh[k]);
-				if (to_draw(data, &ttrans, i, j) == 1)
-					clipping(data, ttrans);
-				if (data->var.it == 1)
-				{
-					data->var.is = i;
-					data->var.io = j;
-				}
-			}
-		}
+			display_object(data, data->scene[i].object[j]);
 	}
 }
 
@@ -107,10 +108,7 @@ void				display_renderer(t_doom *data)
 	unsigned int	*pixels;
 	SDL_Rect		rect;
 
-	rect.h = W_HEIGHT;
-	rect.w = W_WIDTH;
-	rect.x = 0;
-	rect.y = 0;
+	rect = (SDL_Rect){ 0, 0, W_WIDTH, W_HEIGHT };
 	data->window = SDL_CreateTextureFromSurface(data->renderer, data->screen);
 	pixels = (unsigned int *)data->screen->pixels;
 	while (++i < W_LEN)

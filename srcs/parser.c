@@ -19,6 +19,7 @@ static void     handle_objectname(t_doom *data, t_scene *scene, int *start)
     data->pdata.s = 0;
     data->pdata.ti = 0;
     scene->object[++data->pdata.io].i = data->pdata.io;
+    scene->object[data->pdata.io].si = scene->i;
     scene->object[data->pdata.io].mesh = NULL;
     while (isblank(data->str[++(*start)]))
         ;

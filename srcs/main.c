@@ -67,6 +67,7 @@ static void		init_data(t_doom *data)
 	parser_mtl(data);
 	while (++i < data->var.ac - 1)
 	{
+		data->scene[i].i = i;
 		get_object(data, &data->scene[i], data->tab[i]);
 		if (!(data->scene[i].texture = SDL_LoadBMP("img/doom.bmp")))
 			clean_exit(data, "cube3d: loading sprite doom error", 0);

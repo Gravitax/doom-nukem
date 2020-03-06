@@ -36,10 +36,9 @@ enum			e_key
 	S,
 	X,
 	Y,
-	Z
+	Z,
+	KEY_MAX
 };
-
-# define KNB		Z + 1
 
 typedef union	u_rsqrt
 {
@@ -105,6 +104,7 @@ typedef struct	s_triangle
 typedef struct	s_object
 {
 	int			i;
+	int			si;
 	int			size;
 	int			texture;
 	char		*name;
@@ -113,6 +113,7 @@ typedef struct	s_object
 
 typedef struct	s_scene
 {
+	int			i;
 	int			iobj;
 	SDL_Surface	*texture;
 	t_obj		*object;
@@ -139,10 +140,10 @@ typedef struct	s_matrixlist
 
 typedef struct	s_filltriangle
 {
-	int			x1;
-	int			y1;
-	int			x2;
-	int			y2;
+	float		x1;
+	float		y1;
+	float		x2;
+	float		y2;
 	float		ax;
 	float		bx;
 	float		dax;
@@ -232,7 +233,7 @@ typedef struct	s_parser
 
 typedef struct	s_mapeditor
 {
-	int			key[6];
+	int			key[KEY_MAX];
 }				t_editor;
 
 
@@ -257,9 +258,6 @@ typedef struct	s_mainenv
 	SDL_Window		*pwindow;
 }				t_doom;
 
-void			display_mesh(t_doom *data);
-void			display_renderer(t_doom *data);
-void		    map_editor(t_doom *data);
 void			clean_exit(t_doom *data, char *str, int token);
 float			ft_interpol(float nb1, float nb2, float alpha);
 float			rsqrt(float number);
@@ -281,25 +279,27 @@ void            parser_error(t_doom *data);
 int             parser_goodchar(t_doom *data, char c);
 void            parser_mtl(t_doom *data);
 void            parser_mtlassign(t_doom *data, t_scene *scene, int *i);
-void            skip_line(char *str, int *start);
 void            parser_handlevertex(t_doom *data, t_scene *scene, int *start);
 void			parser_stockvertex(t_doom *data, t_scene *scene, int *i);
+void            skip_line(char *str, int *start);
+
+void		    map_editor(t_doom *data);
 
 SDL_Surface		*new_surface(int w, int h);
 uint32_t		get_pixel(t_doom *data, float samplex, float sampley);
 void			putpixel(t_doom *data, int x, int y, int color);
 void            swap_floats(float *a, float *b);
 
-t_triangle		mmvtriangle(t_mat matrix, t_triangle triangle);
-void			multiply_matrix(t_vec3d i, t_vec3d *o, t_mat m);
 void			pmatrix(t_doom *data);
 void			rotxmatrix(t_mat *matrix, float angle);
 void			rotymatrix(t_mat *matrix, float angle);
 void			rotzmatrix(t_mat *matrix, float angle);
 void			transmatrix(t_mat *matrix, float x, float y, float z);
 
+t_triangle		mmvtriangle(t_mat matrix, t_triangle triangle);
 t_mat			mat_mulmatrix(t_mat m1, t_mat m2);
 t_vec3d			mat_mulvector(t_mat m, t_vec3d i);
+
 void			pointatmatrix(t_mat *matrix,
 					t_vec3d pos, t_vec3d target, t_vec3d up);
 void			quickinversematrix(t_mat *matrix, t_mat mpointat);

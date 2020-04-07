@@ -12,11 +12,9 @@
 
 #ifndef DOOM_H
 # define DOOM_H
-
 # include <stdio.h>
 # include <stdlib.h>
 # include <dirent.h>
-
 # include <SDL2/SDL.h>
 
 # include "../libft/libft.h"
@@ -236,7 +234,6 @@ typedef struct	s_mapeditor
 	int			key[KEY_MAX];
 }				t_editor;
 
-
 typedef struct	s_mainenv
 {
 	float			dbuffer[W_LEN + 1];
@@ -249,6 +246,7 @@ typedef struct	s_mainenv
 	t_pdata			pdata;
 	t_var			var;
 	t_vector		vector;
+	t_scene			tmp[1];
 	t_scene			scene[20];
 	SDL_Event		event;
 	SDL_Surface		*screen;
@@ -258,7 +256,11 @@ typedef struct	s_mainenv
 	SDL_Window		*pwindow;
 }				t_doom;
 
+int				ray_intersect_triangle(t_vec3d ray_origin, t_vec3d ray_vector,
+                	t_triangle triangle, t_vec3d *intersection_point);
+
 void			clean_exit(t_doom *data, char *str, int token);
+void			free_scene(t_scene *scene);
 float			ft_interpol(float nb1, float nb2, float alpha);
 float			rsqrt(float number);
 

@@ -59,6 +59,58 @@ static void		init_matrix(t_doom *data)
 	transmatrix(&data->matrix.trans, 0, 0, 2);
 }
 
+static void			put_block(t_doom *data, int index, int x, int z)
+{
+	static int	i = 0;
+
+	data->tmp[0].object[i].mesh = (t_triangle *)ft_memalloc(sizeof(t_triangle) * 13);
+	data->tmp[0].object[i].size = 13;
+	data->tmp[0].object[i].texture = data->scene[index].object[0].texture;
+	for (int j = 0; j < 13; j++)
+	{
+		data->tmp[0].object[i].mesh[j] = data->scene[index].object[0].mesh[j];
+		for (int k = 0; k < 3; k++)
+		{
+			data->tmp[0].object[i].mesh[j].v[k].x += x;
+			data->tmp[0].object[i].mesh[j].v[k].z += z;		
+		}
+	}
+	++i;
+}
+
+static void			create_mesh(t_doom *data, int index, int size)
+{
+	if (!(data->tmp[0].object = (t_obj *)ft_memalloc(sizeof(t_obj) * size)))
+		clean_exit(data, NULL, 0);
+	for (int i = 0; i < size; i++)
+		if (!(data->tmp[0].object[i].mesh = (t_triangle *)ft_memalloc(sizeof(t_triangle) * 13)))
+        	clean_exit(data, NULL, 0);
+}
+
+static void			create_ground(t_doom *data, int index)
+{
+	const int	block_size = 1;
+	const int	width = 4;
+	const int	depth = 4;
+	int			x = 0;
+	int			z;
+
+	create_mesh(data, index, width * depth);
+	for (int i = 0; i < width; i++)
+	{
+		z = 0;
+		for (int j = 0; j < depth; j++)
+		{
+			put_block(data, index, x, z);
+			z += block_size;
+		}
+		x += block_size;
+	}
+	data->tmp[0].iobj = width * depth;
+	free_scene(&data->scene[index]);
+	data->scene[index] = data->tmp[0];
+}
+
 static void		init_data(t_doom *data)
 {
 	int		i;
@@ -69,6 +121,8 @@ static void		init_data(t_doom *data)
 	{
 		data->scene[i].i = i;
 		get_object(data, &data->scene[i], data->tab[i]);
+		if (ft_strcmp(data->tab[i], "cube") == 0)
+			create_ground(data, i);
 		if (!(data->scene[i].texture = SDL_LoadBMP("img/doom.bmp")))
 			clean_exit(data, "cube3d: loading sprite doom error", 0);
 	}

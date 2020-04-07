@@ -22,19 +22,18 @@ static void     get_texcoor(t_doom *data, float t, int i, int j)
     if (j < 0 || i < 0 || j > W_WIDTH || i > W_HEIGHT)
         return ;
     pos = j + i * W_WIDTH;
-    if (data->var.texture)
-	    ;//w = (1 - t) * data->fdata.sw + t * data->fdata.ew;
-    w = data->fdata.simples[4] + data->fdata.simples[5];
     if (w > data->dbuffer[pos])
     {
         if (data->var.texture)
         {
             //u = (1 - t) * data->fdata.su + t * data->fdata.eu;
 	        //v = (1 - t) * data->fdata.sv + t * data->fdata.ev;
+	        //w = (1 - t) * data->fdata.sw + t * data->fdata.ew;
 			u = data->fdata.simples[0] + data->fdata.simples[1];
 			v = data->fdata.simples[2] + data->fdata.simples[3];
+            w = data->fdata.simples[4] + data->fdata.simples[5];
             putpixel(data, j, i, get_pixel(data, u / w, v / w));
-            //*(int*)(&data->screen->pixels[pos]) = get_pixel(data, u / w, v / w);
+            //*(int*)(&data->screen->pixels[pos * 4]) = get_pixel(data, u / w, v / w);
         }
         else
             putpixel(data, j ,i, data->var.color);

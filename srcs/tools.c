@@ -31,10 +31,25 @@ float			rsqrt(float number)
 	return (conv.f);
 }
 
+void			free_scene(t_scene *scene)
+{
+	int	i;
+
+	i = -1;
+	if (scene->object)
+	{
+		while (++i < scene->iobj)
+		{
+			ft_memdel((void **)&scene->object[i].mesh);
+			ft_memdel((void **)&scene->object[i].name);	
+		}
+		ft_memdel((void **)scene->object);
+	}
+}
+
 static void		free_usages(t_doom *data)
 {
 	int	i;
-	int	j;
 
 	i = -1;
 	if (data->pdata.mtl_ressources)
@@ -49,16 +64,7 @@ static void		free_usages(t_doom *data)
 	i = -1;
 	while (++i < data->var.ac - 1)
 	{
-		j = -1;
-		if (data->scene[i].object)
-		{
-			while (++j < data->scene[i].iobj)
-			{
-				ft_memdel((void **)&data->scene[i].object[j].mesh);
-				ft_memdel((void **)&data->scene[i].object[j].name);	
-			}
-			ft_memdel((void **)&data->scene[i].object);
-		}
+		free_scene(&data->scene[i]);
 		ft_memdel((void **)&data->tab[i]);
 	}
 }

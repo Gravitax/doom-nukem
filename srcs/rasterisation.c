@@ -94,7 +94,7 @@ static void     projection(t_doom *data, t_triangle *buffer)
     while (data->var.index--)
 	{
 	    filltriangletext(data, buffer[data->var.index]);
-	    drawtriangle(data, buffer[data->var.index], 0xffffffff);
+	    //drawtriangle(data, buffer[data->var.index], 0xffffffff);
 	}
 }
 

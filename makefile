@@ -49,6 +49,7 @@ SRC		=	cliptriangle.c \
 			parser.c \
 			parsertools.c \
 			rasterisation.c \
+			ray_intersect_triangle.c \
 			tools.c \
 			vector.c \
 			main.c

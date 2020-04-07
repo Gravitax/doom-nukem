@@ -40,7 +40,9 @@ int         check_format(char ***path_tab, struct dirent *read)
     size = ft_strlen(read->d_name);
     while (size >= 0 && read->d_name[size] != '.')
         --size;
-    if (size > 0 && good_format(read->d_name + size))
+    if (size < 1)
+	return (-1);
+    if (good_format(read->d_name + size))
     {
         while (--size >= 0)
             if (!ft_isalnum(read->d_name[size]))

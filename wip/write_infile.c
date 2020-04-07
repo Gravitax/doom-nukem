@@ -1,5 +1,5 @@
 #include <stdio.h>
-#include "libft/libft.h"
+#include "../libft/libft.h"
 
 /*
 r   : Lecture seule. Le fichier doit avoir été créé au préalable.

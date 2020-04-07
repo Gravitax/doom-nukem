@@ -1,6 +1,6 @@
 #include <dirent.h>
 #include <stdio.h>
-#include "libft/libft.h"
+#include "../libft/libft.h"
 
 char		**ft_tabadd(char **tab, const char *str)
 {

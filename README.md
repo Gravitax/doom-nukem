@@ -11,8 +11,13 @@ This project is available for MacOs >= Catalina 10.15.4 only.
 ---------- Setup --------------
 Be sure to have an internet connection before going through this.
 
+
 git clone https://github.com/Gravitax/doom-nukem
+
 cd doom-nukem
+
 make install
+
 make [OPTI=1 | DEBUG=1]
+
 ./doom-nukem

@@ -1,0 +1,10 @@
+# Format : example|{0, 0, 0}|[0, 0, 0]|true/false|(path/img.xpm)
+#          nom     position  vitesse   static/not texture_path
+# champ vide : valeur inchangee / 0 0 0
+# Coordonnees d'apparition sur la map 
+spawn|{-0.2, 0.5, -0.3}
+orientation|{0.0, 0.0}
+armmesh_Mesh|{}|[]|true|()|
+poignee_ump-45|{}|[]|true|()|
+chargeur_ump-45.065|{}|[]|true|()|
+culasse_ump-45.067|{}|[]|true|()|

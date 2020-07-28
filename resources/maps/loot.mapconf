@@ -1,0 +1,10 @@
+# Format : example|{0, 0, 0}|[0, 0, 0]|true/false|(path/img.xpm)
+#          nom     position  vitesse   static/not texture_path
+# champ vide : valeur inchangee / 0 0 0
+# Coordonnees d'apparition sur la map 
+spawn|{0.0, 0.0, 0.0}
+orientation|{0.0, 0.0}
+nuke_Cube.001|{}|[]|true|(resources/textures/loots/nuke.xpm)|
+shield_Cube.002|{}|[]|true|(resources/textures/loots/dollar.xpm)|
+money_Cube.003|{}|[]|true|(resources/textures/loots/shield.xpm)|
+ammos_Cube.004|{}|[]|true|(resources/textures/loots/ammos.xpm)|

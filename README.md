@@ -1,4 +1,4 @@
-# Doom_Nukem
+# doom-nukem
 
 Last project of the 42's graphic branch.
 The goal of this project is to make a complete doom-like FPS game in C.

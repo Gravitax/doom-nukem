@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/07/09 21:08:03 by gedemais          #+#    #+#             */
-/*   Updated: 2020/07/09 21:08:43 by gedemais         ###   ########.fr       */
+/*   Updated: 2020/07/28 16:21:53 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,7 +24,6 @@ int			get_spawn_position(t_map *map, char **line)
 	pos = read_vec3d(line[1], '{', '}');
 	if (pos.x == INFINITY || pos.y == INFINITY || pos.z == INFINITY)
 	{
-		printf("read_vec3d failed on : %s\n", line[1]);
 		return (-1);
 	}
 	map->spawn = pos;
@@ -43,7 +42,6 @@ int			get_cam_direction(t_map *map, char **line)
 	dir = read_vec2d(line[1], '{', '}');
 	if (dir.u == INFINITY || dir.v == INFINITY || dir.w == INFINITY)
 	{
-		printf("read_vec3d failed on : %s\n", line[1]);
 		return (-1);
 	}
 	map->cam_dir = dir;

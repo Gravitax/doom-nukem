@@ -6,7 +6,7 @@
 /*   By: maboye <maboye@student.42.fr>              +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2019/11/29 07:15:58 by gedemais          #+#    #+#             */
-/*   Updated: 2020/07/21 19:19:19 by maboye           ###   ########.fr       */
+/*   Updated: 2020/07/28 16:22:24 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -88,7 +88,6 @@ int			load_texture(t_mlx *mlx, char *path, t_sprite *txt, bool rev)
 	if (!(txt->img_ptr = mlx_xpm_file_to_image(mlx->mlx_ptr,
 												path, &txt->wdt, &txt->hgt)))
 	{
-		printf("failed to load %s\n", path);
 		return (-1);
 	}
 	if (!(txt->img_data = mlx_get_data_addr(txt->img_ptr, &t, &t, &t)))

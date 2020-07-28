@@ -82,6 +82,5 @@ typedef struct s_event_block	t_event_block;
 typedef union u_bep				t_bep;
 
 typedef struct s_hud			t_hud;
-typedef struct s_buzzer			t_buzzer;
 
 #endif

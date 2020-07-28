@@ -36,10 +36,3 @@ else
 	echo "bzip2 missing, installing it with brew..."
 	brew install bzip2 && brew link bzip2
 fi
-
-if brew ls --versions zlib > /dev/null; then
-	echo "zlib found"
-else
-	echo "zlib missing, installing it with brew..."
-	brew install zlib && brew link zlib
-fi

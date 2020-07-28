@@ -6,7 +6,7 @@
 /*   By: gedemais <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2020/02/04 03:53:16 by gedemais          #+#    #+#             */
-/*   Updated: 2020/07/09 20:12:18 by gedemais         ###   ########.fr       */
+/*   Updated: 2020/07/28 16:21:02 by maboye           ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -91,7 +91,6 @@ int			load_face(char **toks, t_map *map, t_face *face)
 
 	if (check_format(toks))
 	{
-		printf("Wrong format\n");
 		return (-1);
 	}
 	if (!(m = dyacc(&map->meshs, map->nmesh - 1)))

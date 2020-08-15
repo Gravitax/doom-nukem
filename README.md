@@ -1,7 +1,5 @@
 # doom-nukem
 
-note: 117 / 100
-
 Last project of the 42's graphic branch.
 The goal of this project is to make a complete doom-like FPS game in C.
 
@@ -23,3 +21,6 @@ make install
 make [OPTI=1 | DEBUG=1]
 
 ./doom-nukem
+
+
+Note: 117 / 100

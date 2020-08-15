@@ -8,6 +8,8 @@ render our images and because of its great performances.
 
 This project is available for MacOs >= Catalina 10.15.4 only.
 
+Note: 117 / 100
+
 ---------- Setup --------------
 Be sure to have an internet connection before going through this.
 
@@ -21,6 +23,3 @@ make install
 make [OPTI=1 | DEBUG=1]
 
 ./doom-nukem
-
-
-Note: 117 / 100

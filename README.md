@@ -20,6 +20,6 @@ cd doom-nukem
 
 make install
 
-make [OPTI=1 | DEBUG=1]
+make OPTI=1
 
 ./doom-nukem
